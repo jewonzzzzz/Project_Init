@@ -1,31 +1,40 @@
 package com.Init.domain;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.Data;
 
-/**
- * 
- *  VO(Value Object) : 데이터 저장 객체 (값을 저장하는 동작 이외의 동작 포함)
- *  DTO(Data Transfer Object) : 데이터 전송 객체 (값을 저장하는 동작 이외의 동작 X)
- *
- * tbl_member 테이블정보를 저장하는 객체
- */
 
-//@Data : set/get메서드 자동생성
 @Data
 public class MemberVO {
-	
-	//private String uId; //getUId() x
-	// 변수명은 소문자로
 
-	private String userid;
-	private String userpw;
-	private String username;
-	private String useremail;
-	private Timestamp regdate;
-	private Timestamp updatedate;
-	
-	
+	private String id; 	
+	private String cid; 
+	private String pw; 
+	private String profile; 
+	private String name; 
+	private Date birth;
+	private String gender; 
+	private String tel; 
+	private String email; 
+	private String addr;  
+	private String dnum; 
+	private String position;  
+	private String job_id; 
+	private Integer status; 
+	private Integer bnum; 
+	private Integer work_type; 
+	private Integer salary; 
+	private String account_num; 
+	private String bank_name; 
+	private String account_name; 
+	private Date start_date; 
+	private Date break_date; 
+	private Date restart_date; 
+	private Date quit_date; 
+	private String power; 
+	private Integer level;
+	private Timestamp update_date;	
 	
 }
