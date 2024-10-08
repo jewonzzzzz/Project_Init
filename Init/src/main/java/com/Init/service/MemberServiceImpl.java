@@ -13,7 +13,6 @@ import com.Init.persistence.MemberDAO;
 @Service
 public class MemberServiceImpl implements MemberService{
 
-	// MemberDAO 객체 주입
 	@Autowired
 	private MemberDAO mdao;
 	
@@ -23,12 +22,40 @@ public class MemberServiceImpl implements MemberService{
 	public void memberJoin(MemberVO vo) {
 		logger.debug(" 컨트롤러 -> 서비스 호출");
 		logger.debug(" 회원가입 메서드 memberJoin(MemberVO vo) 실행");
-		
 		logger.debug(" 서비스에서 -> DAO ");
 		
 		mdao.insertMember(vo);
 		
 		logger.debug(" DAO -> 서비스");
 		logger.debug(" 서비스 -> 컨트롤러");
+	}
+	
+	@Override
+	public MemberVO memberLoginCheck(MemberVO vo) {
+		logger.debug("컨트롤러가 호출 -> DAO 호출");
+		return mdao.loginMember(vo);
+	}
+	
+	@Override
+	public MemberVO memberInfo(String id) {
+		logger.debug("memberInfo(String userid) 실행");
+		return mdao.getMember(id);
+	}
+	// 회원정보 수정시 비밀번호 체크
+	@Override
+	public boolean checkPassword(String id, String inputPassword) {
+		String storedPassword = mdao.getPassword(id);
+        return storedPassword.equals(inputPassword);
+	}
+
+	@Override
+	public int memberUpdate(MemberVO uvo) {
+		logger.debug("memberUpdate(MemberVO uvo) 실행");
+		// 회원정보 수정
+		int result = mdao.updateMember(uvo);
+		// 회원정보 수정 이력
+		mdao.insertHisMember(uvo);
+		
+		return result;
 	}
 }
