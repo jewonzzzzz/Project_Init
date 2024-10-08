@@ -60,16 +60,33 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#base">
                   <i class="fas fa-layer-group"></i>
+<<<<<<< HEAD
+                  <p>근태</p>
+=======
                   <p>인사정보</p>
+>>>>>>> branch 'develop' of https://github.com/jewonzzzzz/Project_Init.git
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
+<<<<<<< HEAD
+                      <a href="<%= request.getContextPath() %>/Attendance/attendanceMain">
+                        <span class="sub-item">근태 관리(관리자)</span>
+                      </a>
+                 
+                 	<a href="icon-menu.html">
+                        <span class="sub-item">근태 관리</span>
+=======
                       <a href="/member/info">
                         <span class="sub-item">내정보</span>
+>>>>>>> branch 'develop' of https://github.com/jewonzzzzz/Project_Init.git
                       </a>
                     </li>
+<<<<<<< HEAD
+                 
+                   
+=======
                     <li>
                       <a href="components/buttons.html">
                         <span class="sub-item">자격증/상훈</span>
@@ -110,25 +127,26 @@
                         <span class="sub-item">Typography</span>
                       </a>
                     </li>
+>>>>>>> branch 'develop' of https://github.com/jewonzzzzz/Project_Init.git
                   </ul>
                 </div>
               </li>
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarLayouts">
                   <i class="fas fa-th-list"></i>
-                  <p>Sidebar Layouts</p>
+                  <p>휴가</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="sidebar-style-2.html">
-                        <span class="sub-item">Sidebar Style 2</span>
+                        <span class="sub-item">휴가 관리(관리자)</span>
                       </a>
                     </li>
                     <li>
                       <a href="icon-menu.html">
-                        <span class="sub-item">Icon Menu</span>
+                        <span class="sub-item">휴가 관리</span>
                       </a>
                     </li>
                   </ul>
