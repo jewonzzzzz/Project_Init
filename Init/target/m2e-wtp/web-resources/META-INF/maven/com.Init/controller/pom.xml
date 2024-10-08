@@ -184,6 +184,12 @@
 		    <version>2.17.2</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.5</version>
+		</dependency>
+		
 		
 		<!-- 외부 라이브러리 추가 -->
 		
