@@ -1,18 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<!-- JSTL-core 라이브러리 추가 -->
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
-
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
+<head>
+<meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
+<!-- 버튼 api -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/attendanceMain.css" />
+<!--구글 api -->
+<script src="https://apis.google.com/js/api.js"></script> 
+
+
+
+
+    <title>근태관리</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <link
       rel="icon"
       href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
@@ -20,6 +21,7 @@
     />
 
     <!-- Fonts and icons -->
+    
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
@@ -58,91 +60,74 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-	
-<table border="1" cellspacing="0" cellpadding="10" style="width: 100%; border-collapse: collapse;">
-  <thead>
-    <tr>
-      <th colspan="2" style="background-color: #f2f2f2; text-align: center;">내정보</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="15" style="width: 150px; text-align: center; vertical-align: top;">
-        <img src="${memberVO.profile}" alt="증명사진" width="150px" height="auto" style="border-radius: 5px;">
-      </td>
-      <td style="font-weight: bold;">사원번호</td>
-      <td>${memberVO.id}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">성명</td>
-      <td>${memberVO.name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">생년월일</td>
-      <td>${memberVO.birth}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">성별</td>
-      <td>${memberVO.gender}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">연락처</td>
-      <td>${memberVO.tel}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">이메일</td>
-      <td>${memberVO.email}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">주소</td>
-      <td>${memberVO.addr}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">부서번호</td>
-      <td>${memberVO.dnum}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">직급</td>
-      <td>${memberVO.position}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">직무</td>
-      <td>${memberVO.job_id}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">재직구분</td>
-      <td>${memberVO.status}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">지점번호</td>
-      <td>${memberVO.bnum}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">근무형태</td>
-      <td>${memberVO.work_type}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">예금주</td>
-      <td>${memberVO.account_name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">계좌번호</td>
-      <td>${memberVO.account_num}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">은행명</td>
-      <td>${memberVO.bank_name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">입사일자</td>
-      <td>${memberVO.start_date}</td>
-    </tr>
-  </tbody>
-</table>
-<h2><a href="/member/update"> 수정하기</a></h2>
-          
-          
-<!------------------------------------------------------------------------------------------------------------------>
+
+		
+      
+ <!--위에 버튼  -->
+   
+<div class="button-container">
+    <a href="#" class="button">
+        <span class="icon">✔️</span> 근태 결재 요청
+    </a>
+    <a href="#" class="button">
+        <span class="icon">📊</span> 근태 이력 조회
+    </a>
+    <a href="#" class="button">
+        <span class="icon">📝</span> 휴직 신청
+    </a>
+    <a href="#" class="button">
+        <span class="icon">📅</span> 휴직 현황
+    </a>
+</div>
+
+<!-- 구글 달력  -->
+  <h1>Calendar Events</h1>
+    <ul id="events-list"></ul>
+
+    <script>
+        const apiKey = 'AIzaSyDvCs91rtqmDQj-om1W3TVwMn0Z4uoAyJU'; // 여기에 생성한 API 키를 입력합니다.
+        const calendarId = 'ko.korea#holiday@group.v.calendar.google.com';
+        const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${apiKey}`;
+
+        async function fetchCalendarEvents() {
+            const eventsList = document.getElementById('events-list');
+            eventsList.innerHTML = '<li>Loading...</li>'; // 로딩 중 메시지
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayEvents(data.items);
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                eventsList.innerHTML = '<li>이벤트를 불러오는 중 오류가 발생했습니다.</li>'; // 오류 메시지
+            }
+        }
+
+        function displayEvents(events) {
+            const eventsList = document.getElementById('events-list');
+            eventsList.innerHTML = ''; // 이전 내용을 지웁니다.
+
+            if (!events || events.length === 0) {
+                eventsList.innerHTML = '<li>이벤트가 없습니다.</li>';
+                return;
+            }
+
+            events.forEach(event => {
+                const listItem = document.createElement('li');
+                listItem.textContent = event.summary + ' - ' + (event.start.dateTime || event.start.date);
+                eventsList.appendChild(listItem);
+            });
+        }
+
+        window.onload = fetchCalendarEvents;
+    </script>
+
+
+
+					<!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->
         </div>
