@@ -16,11 +16,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Init.domain.AttendanceVO;
 import com.Init.service.AttendanceService;
@@ -29,8 +29,8 @@ import com.Init.service.AttendanceService;
 @RequestMapping(value = "/Attendance/*")
 public class AttendanceController {
     
-    @Autowired
-    private AttendanceService mService;
+	 @Autowired
+	    private AttendanceService attendanceService;
 
     
 
@@ -47,7 +47,7 @@ public class AttendanceController {
         
     }
     
-    // 시간 조회 
+    // 메인
     // http://localhost:8088/Attendance/attendanceMain
     @GetMapping(value = "/attendanceMain")
     public String getAllTime() {
@@ -56,19 +56,30 @@ public class AttendanceController {
         return "Attendance/attendanceMain";
     }
     
-    @Autowired
-    private AttendanceService attendanceService;
-//ㅇ
-    // 모든 시간 정보 조회
-    @RequestMapping("/getAllCheckTime")
-    public String getAllCheckTime(@RequestParam("emp_id") String emp_id, Model model) {
-        // 서비스 호출해서 결과값 가져오기
-        List<AttendanceVO> checkTimes = attendanceService.getAllCheckTime(emp_id);
-        // 모델에 데이터 추가 (JSP에서 사용할 수 있도록)
-        model.addAttribute("checkTimes", checkTimes);
-        // 뷰 페이지로 이동
-        return "attendance/getAllCheckTime";
+   
+
+    // http://localhost:8088/Attendance/attendanceAdmin
+    @RequestMapping(value = "attendanceAdmin", method = RequestMethod.GET)
+    public String getCheckTimePage() {
+        // 초기 로드 시 데이터 조회는 하지 않음
+    	logger.debug(" /attendanceAdmin -> page 실행 ");
+        logger.debug(" /views/Attendance/attendanceAdmin.jsp 뷰페이지 연결");
+        return "Attendance/attendanceAdmin"; // 이동할 JSP 페이지
     }
+
+    // POST 메서드는 AJAX를 통해 호출
+    @RequestMapping(value = "attendanceData", method = RequestMethod.POST)
+    @ResponseBody
+    public List<AttendanceVO> getAllCheckTime(@RequestParam("emp_id") String emp_id) {
+        // 서비스 호출해서 결과값 가져오기
+    	
+    	 logger.debug("결과값"+emp_id);
+    	
+        return attendanceService.getAllCheckTime(emp_id); // List<AttendanceVO>를 반환
+       
+    }
+
+
 
     // 모든 시간 수정
     @PostMapping("/updateAllTime")
@@ -161,6 +172,11 @@ public class AttendanceController {
         AttendanceVO workStatus = attendanceService.getWorkStatus(emp_id);
         model.addAttribute("workStatus", workStatus);
         return "attendance/getWorkStatus";
+    }
+    	
+  
+}
+turn "attendance/getWorkStatus";
     }
     	
   
