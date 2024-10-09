@@ -75,7 +75,7 @@
                         <span class="sub-item">근태 관리</span>
                       </a>
                  
-                 	<a href="icon-menu.html">
+                 	<a href="<%= request.getContextPath() %>/Attendance/attendanceAdmin">
                         <span class="sub-item">근태 관리(관리자)</span>
 
                   
@@ -96,12 +96,12 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="sidebar-style-2.html">
+                      <a href="<%= request.getContextPath() %>/leave/main">
                         <span class="sub-item">휴가 관리(관리자)</span>
                       </a>
                     </li>
                     <li>
-                      <a href="icon-menu.html">
+                      <a href="<%= request.getContextPath() %>/leave/mainAdmin">
                         <span class="sub-item">휴가 관리</span>
                       </a>
                     </li>

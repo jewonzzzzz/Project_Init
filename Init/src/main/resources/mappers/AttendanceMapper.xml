@@ -6,15 +6,13 @@
 
 <mapper namespace="com.Init.mapper.AttendanceMapper">
     <!-- 모든 시간 정보 조회 -->
-    <select id="getAllCheckTime" resultType="com.Init.domain.AttendanceVO">
-        select
-        check_in, check_out,
-        workingoutside_time,
-        return_time, working_time, night_work_time, special_working_time
-        from
-        attendance_ch
-        where emp_id = #{emp_id}
-    </select>
+<select id="getAllCheckTime" resultType="com.Init.domain.AttendanceVO">
+    SELECT check_in, check_out,
+           workingoutside_time,
+           return_time, working_time, night_work_time, special_working_time
+    FROM attendance_ch
+    WHERE emp_id = #{emp_id}
+</select>
 
     <!-- 출근 시간, 퇴근시간, 외근시간, 복귀시간 모든시간 수정 -->
     <update id="updateAllTime">

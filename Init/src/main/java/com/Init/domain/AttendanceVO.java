@@ -21,7 +21,7 @@ public class AttendanceVO {
 	private Timestamp created_at;
 	private Timestamp new_check_in;
 	private Timestamp new_check_out;
-	private Timestamp new_WorkingOutside_time;
+	private Timestamp new_workingoutside_time;
 	private Timestamp working_time;
 	private Timestamp night_work_time;
 	private Timestamp special_working_time; 
