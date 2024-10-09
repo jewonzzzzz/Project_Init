@@ -35,20 +35,74 @@ public class AttendanceDAOImpl implements AttendanceDAO{
 	
 	// Mapper namespace 정보 저장
 	private static final String NAMESPACE = "com.Init.mapper.AttendanceMapper";
-	/** * Slf4j Logger */private static final Logger logger = LoggerFactory.getLogger(AttendanceDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(AttendanceDAOImpl.class);
 
 	
-	@Override
-	public List<AttendanceVO> getAllTime(String id) {
-		logger.debug("모든 시간 조회 시작 ");
-		List<AttendanceVO> result = sqlSession.selectList(NAMESPACE, ".getAlltime");
-		
-		logger.debug("모든 시간 조회 결과 " +result);
-		
-		return result;
+	  @Override
+	    public List<AttendanceVO> getAllCheckTime(String emp_id) {
+		  logger.debug("모든 시간 조회 시작 ");
+
+		  return sqlSession.selectList(NAMESPACE + "getAllCheckTime", emp_id);
+
+	    }
+
+	    @Override
+	    public void updateAllTime(AttendanceVO uvo) {
+	        sqlSession.update(NAMESPACE + "updateAllTime", uvo);
+	    }
+
+	    @Override
+	    public List<AttendanceVO> getMemberWorkStatus(String emp_id) {
+	        return sqlSession.selectList(NAMESPACE + "getMemberWorkStatus", emp_id);
+	    }
+
+	    @Override
+	    public List<AttendanceVO> getMemberCalendar(AttendanceVO gvo) {
+	        
+	        return sqlSession.selectList(NAMESPACE + "getMemberCalendar", gvo);
+	    }
+
+	    @Override
+	    public void insertAllTime(AttendanceVO attendance) {
+	        sqlSession.insert(NAMESPACE + "insertAllTime", attendance);
+	    }
+
+	    @Override
+	    public void insertWorkStatus(String workform_status) {
+	        sqlSession.insert(NAMESPACE + "insertWorkStatus", workform_status);
+	    }
+
+	    @Override
+	    public void updateWorkStatus(String emp_id, String workform_status) {
+	        sqlSession.update(NAMESPACE + "updateWorkStatus", workform_status);
+	    }
+
+	    @Override
+	    public void insertCheckin(String check_in) {
+	        sqlSession.insert(NAMESPACE + "insertCheckin", check_in);
+	    }
+
+	    @Override
+	    public void insertCheckOutTime(String check_out) {
+	        sqlSession.insert(NAMESPACE + "insertCheckOutTime", check_out);
+	    }
+
+	    @Override
+	    public AttendanceVO getCheckTime(String emp_id) {
+	        return sqlSession.selectOne(NAMESPACE + "getCheckTime", emp_id);
+	    }
+
+	    @Override
+	    public void updateCheckTime(AttendanceVO attendance) {
+	        sqlSession.update(NAMESPACE + "updateCheckTime", attendance);
+	    }
+
+	    @Override
+	    public AttendanceVO getWorkStatus(String emp_id) {
+	        return sqlSession.selectOne(NAMESPACE + "getWorkStatus", emp_id);
+	    }
 	}
-	
      
 	
 	
-}
+

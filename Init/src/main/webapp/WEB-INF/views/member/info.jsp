@@ -1,12 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
+<!-- JSTL-core 라이브러리 추가 -->
+<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
-<head>
-<meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
+      type="image/x-icon"
+    />
 
     <!-- Fonts and icons -->
-    
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
@@ -45,10 +58,90 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-
-
-
-
+	
+<table border="1" cellspacing="0" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th colspan="2" style="background-color: #f2f2f2; text-align: center;">내정보</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="15" style="width: 150px; text-align: center; vertical-align: top;">
+        <img src="${memberVO.profile}" alt="증명사진" width="150px" height="auto" style="border-radius: 5px;">
+      </td>
+      <td style="font-weight: bold;">사원번호</td>
+      <td>${memberVO.id}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">성명</td>
+      <td>${memberVO.name}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">생년월일</td>
+      <td>${memberVO.birth}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">성별</td>
+      <td>${memberVO.gender}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">연락처</td>
+      <td>${memberVO.tel}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">이메일</td>
+      <td>${memberVO.email}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">주소</td>
+      <td>${memberVO.addr}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">부서번호</td>
+      <td>${memberVO.dnum}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">직급</td>
+      <td>${memberVO.position}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">직무</td>
+      <td>${memberVO.job_id}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">재직구분</td>
+      <td>${memberVO.status}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">지점번호</td>
+      <td>${memberVO.bnum}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">근무형태</td>
+      <td>${memberVO.work_type}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">예금주</td>
+      <td>${memberVO.account_name}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">계좌번호</td>
+      <td>${memberVO.account_num}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">은행명</td>
+      <td>${memberVO.bank_name}</td>
+    </tr>
+    <tr>
+      <td style="font-weight: bold;">입사일자</td>
+      <td>${memberVO.start_date}</td>
+    </tr>
+  </tbody>
+</table>
+<h2><a href="/member/update"> 수정하기</a></h2>
+          
+          
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->
