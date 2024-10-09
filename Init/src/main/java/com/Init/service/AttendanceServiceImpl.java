@@ -1,48 +1,77 @@
 package com.Init.service;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Calendar;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Service;
 
 import com.Init.domain.AttendanceVO;
 import com.Init.persistence.AttendanceDAO;
 
-
-
-
 @Service
-public class AttendanceServiceImpl implements AttendanceService{
+public class AttendanceServiceImpl implements AttendanceService {
 
-	// MemberDAO 객체 주입
-	@Autowired
-	private AttendanceDAO mdao;
+    @Inject
+    private AttendanceDAO attendanceDAO;
 
-	
-	private static final Logger logger = LoggerFactory.getLogger(AttendanceServiceImpl.class);
-	
-	   
-	@Override
-	public List<AttendanceVO> getAllTime(String emp_id) {
-		logger.debug(" 컨트롤러 -> 서비스 호출");
-		logger.debug("모든 시간 조회 getAllTime (String emp_id)실행");
-		logger.debug(" 서비스에서 -> DAO ");
-		
-		List<AttendanceVO> result = mdao.getAllTime(emp_id);
-		
-		logger.debug(" DAO -> 서비스");
-		logger.debug(" 서비스 -> 컨트롤러");
-		
-		return result;
-	}
-	
-	//서비스 
-	
-	
-	
+    @Override
+    public List<AttendanceVO> getAllCheckTime(String emp_id) {
+        return attendanceDAO.getAllCheckTime(emp_id);
+    }
+
+    @Override
+    public void updateAllTime(AttendanceVO uvo) {
+        attendanceDAO.updateAllTime(uvo);
+    }
+
+    @Override
+    public List<AttendanceVO> getMemberWorkStatus(String emp_id) {
+        return attendanceDAO.getMemberWorkStatus(emp_id);
+    }
+
+    @Override
+    public List<AttendanceVO> getMemberCalendar(AttendanceVO gvo) {
+        return attendanceDAO.getMemberCalendar(gvo);
+    }
+
+    @Override
+    public void insertAllTime(AttendanceVO attendance) {
+        attendanceDAO.insertAllTime(attendance);
+    }
+
+    @Override
+    public void insertWorkStatus(String workform_status) {
+        attendanceDAO.insertWorkStatus(workform_status);
+    }
+
+    @Override
+    public void updateWorkStatus(String emp_id, String workform_status) {
+        attendanceDAO.updateWorkStatus(emp_id, workform_status);
+    }
+
+    @Override
+    public void insertCheckin(String check_in) {
+        attendanceDAO.insertCheckin(check_in);
+    }
+
+    @Override
+    public void insertCheckOutTime(String check_out) {
+        attendanceDAO.insertCheckOutTime(check_out);
+    }
+
+    @Override
+    public AttendanceVO getCheckTime(String emp_id) {
+        return attendanceDAO.getCheckTime(emp_id);
+    }
+
+    @Override
+    public void updateCheckTime(AttendanceVO attendance) {
+        attendanceDAO.updateCheckTime(attendance);
+    }
+
+    @Override
+    public AttendanceVO getWorkStatus(String emp_id) {
+        return attendanceDAO.getWorkStatus(emp_id);
+    }
 }

@@ -2,14 +2,17 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<html lang="ko">
+<meta charset="UTF-8">
 <head>
-<meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
-<!-- 버튼 api -->
+ <!-- 한글 인코딩 추가 -->
+
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/attendanceMain.css" />
-<!--구글 api -->
-<script src="https://apis.google.com/js/api.js"></script> 
 
 
+ 
+    
 
 
     <title>근태관리</title>
@@ -80,54 +83,33 @@
     </a>
 </div>
 
-<!-- 구글 달력  -->
-  <h1>Calendar Events</h1>
-    <ul id="events-list"></ul>
-
-    <script>
-        const apiKey = 'AIzaSyDvCs91rtqmDQj-om1W3TVwMn0Z4uoAyJU'; // 여기에 생성한 API 키를 입력합니다.
-        const calendarId = 'ko.korea#holiday@group.v.calendar.google.com';
-        const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${apiKey}`;
-
-        async function fetchCalendarEvents() {
-            const eventsList = document.getElementById('events-list');
-            eventsList.innerHTML = '<li>Loading...</li>'; // 로딩 중 메시지
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                displayEvents(data.items);
-            } catch (error) {
-                console.error('There was a problem with the fetch operation:', error);
-                eventsList.innerHTML = '<li>이벤트를 불러오는 중 오류가 발생했습니다.</li>'; // 오류 메시지
-            }
-        }
-
-        function displayEvents(events) {
-            const eventsList = document.getElementById('events-list');
-            eventsList.innerHTML = ''; // 이전 내용을 지웁니다.
-
-            if (!events || events.length === 0) {
-                eventsList.innerHTML = '<li>이벤트가 없습니다.</li>';
-                return;
-            }
-
-            events.forEach(event => {
-                const listItem = document.createElement('li');
-                listItem.textContent = event.summary + ' - ' + (event.start.dateTime || event.start.date);
-                eventsList.appendChild(listItem);
-            });
-        }
-
-        window.onload = fetchCalendarEvents;
-    </script>
 
 
 
-					<!------------------------------------------------------------------------------------------------------------------>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->
         </div>
@@ -137,6 +119,8 @@
       <!-- main-panel -->
     </div>
     <!-- main-wrapper -->
+    
+
     
     <!--   Core JS Files   -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/core/jquery-3.7.1.min.js"></script>
