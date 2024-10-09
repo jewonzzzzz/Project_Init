@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
@@ -39,13 +40,18 @@ public class AttendanceDAOImpl implements AttendanceDAO{
 
 	
 	  @Override
-	    public List<AttendanceVO> getAllCheckTime(String emp_id) {
+	    public List<AttendanceVO> getAllCheckTime(@Param("emp_id") String emp_id) {
 		  logger.debug("모든 시간 조회 시작 ");
 
-		  return sqlSession.selectList(NAMESPACE + "getAllCheckTime", emp_id);
-
+		  return sqlSession.selectList(NAMESPACE + ".getAllCheckTime", emp_id);
+		 
 	    }
 
+	  
+	  
+	  
+	  
+	  
 	    @Override
 	    public void updateAllTime(AttendanceVO uvo) {
 	        sqlSession.update(NAMESPACE + "updateAllTime", uvo);
