@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="com.Init.mapper.AttendanceMapper">
+    <!-- 모든 시간 정보 조회 -->
+    <select id="getAllCheckTime" resultType="com.Init.domain.AttendanceVO">
+        select
+        check_in, check_out,
+        workingoutside_time,
+        return_time, working_time, night_work_time, special_working_time
+        from
+        attendance_ch
+        where emp_id = #{emp_id}
+    </select>
+
+    <!-- 출근 시간, 퇴근시간, 외근시간, 복귀시간 모든시간 수정 -->
+    <update id="updateAllTime">
+        UPDATE attendance_ch
+        SET check_in = #{check_in},
+            check_out = #{check_out},
+            workingoutside_time = #{workingoutside_time},
+            night_work_time = #{night_work_time},
+            special_working_time = #{special_working_time},
+            return_time = #{return_time}
+        where emp_id = #{emp_id}
+    </update>
+
+    <!-- 직원 근무 상태 조회 : 사원번호 별 근태 이력현황 (관리자) -->
+    <select id="getMemberWorkStatus" resultType="com.Init.domain.AttendanceVO">
+        select
+        attendance_id, status, check_in, check_out, workform_status
+        FROM attendance_ch
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 나의 30일 근무 캘린더 조회 -->
+    <select id="getMemberCalendar" resultType="com.Init.domain.AttendanceVO">
+        select attendance_id, working_time, work_status
+        From attendance_ch
+        where emp_id = #{emp_id}
+        AND working_time BETWEEN DATE_SUB(NOW(), INTERVAL 30 DAY) AND NOW()
+        AND status = #{status}
+    </select>
+
+    <!-- 모든시간 추가 -->
+    <insert id="insertAllTime">
+        insert into attendance_ch
+        (check_time, check_out, workingoutside_time, return_time, working_time,
+        night_work_time, special_working_time)
+        values (#{check_time}, #{check_out}, #{workingoutside_time}, #{return_time},
+        #{working_time}, #{night_work_time}, #{special_working_time})
+    </insert>
+
+    <!-- 고정, 선택, 교대, 야간, 특별 근무 종류에 근무 형태 삽입 -->
+    <insert id="insertWorkStatus">
+        insert into attendance_ch
+        (workform_status)
+        values (#{workform_status})
+    </insert>
+
+    <!-- 고정, 선택, 교대, 야간, 특별 근무 종류에 근무 형태 수정 -->
+    <update id="updateWorkStatus">
+        update attendance_ch
+        set workform_status = #{workform_status}
+        where emp_id = #{emp_id}
+    </update>
+
+    <!-- 출근시간 QR코드로 DB에저장 -->
+    <insert id="insertCheckin">
+        insert into attendance_ch
+        (check_in)
+        values (#{check_in})
+    </insert>
+
+    <!-- 퇴근시간 QR코드로 DB에저장 -->
+    <insert id="insertCheckOutTime">
+        insert into attendance_ch
+        (check_out)
+        values (#{check_out})
+    </insert>
+
+    <!-- 출,퇴근 시간 조회 -->
+    <select id="getCheckTime" resultType="com.Init.domain.AttendanceVO">
+        select check_in, check_out
+        from attendance_ch
+        where emp_id = #{emp_id}
+    </select>
+
+    <!-- 출,퇴근 시간 수정 -->
+    <update id="updateCheckTime">
+        update attendance_ch
+        set check_in = #{check_in},
+            check_out = #{check_out}
+        where emp_id = #{emp_id}
+    </update>
+</mapper>
