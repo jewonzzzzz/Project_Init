@@ -19,6 +19,8 @@ public class MemberVO {
 	private String tel; 
 	private String email; 
 	private String addr;  
+	private String addr_detail;  
+	private String addr_num;  	
 	private String dnum; 
 	private String position;  
 	private String job_id; 

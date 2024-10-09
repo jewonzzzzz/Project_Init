@@ -46,6 +46,76 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
+  <!------------------------------------------------------------------------------------------------------------------>
+ <style>
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .info-table th,
+      .info-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      .info-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+      }
+      
+      .info-table img {
+        border-radius: 5px;
+        max-width: 150px;
+        height: auto;
+      }
+
+      .info-actions {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      .info-actions button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        float: left;
+      }
+
+      .info-actions button.delete {
+        background-color: #f44336;
+      }
+
+      .tabs {
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        margin-bottom: 20px;
+      }
+
+      .tabs a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        background-color: #f4f4f4;
+        margin-right: 5px;
+      }
+
+      .tabs a.active {
+        background-color: white;
+        font-weight: bold;
+      }
+    </style>
+ <!------------------------------------------------------------------------------------------------------------------>
+ 
   </head>
   <body>
     <div class="wrapper">
@@ -58,113 +128,83 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
+       
+<!-- 탭 -->
+            <div class="tabs">
+              <a href="" class="active">내정보</a>
+              <a href="">자격증</a>
+              <a href="">인사발령</a>
+              <a href="">포상/징계</a>
+              <a href="">인사평가</a>
+              <!-- 추가 탭 -->
+            </div>
 
-<fieldset style="width: 100%; margin: auto;">
-  <legend>회원정보 수정</legend>
+            <div class="info-container">
+              <!-- 사진 및 기본 정보 입력 -->
+              <form action="/member/update" method="POST">
+                <table class="info-table" style="width: 70%;">
+                  <tr>
+                    <td rowspan="4" style="width: 10%;">
+                      <img src="${memberVO.profile}" alt="증명사진" />
+                    </td>
+                    <th>사원번호</th>
+                 	<td><input type="text" name="id" value="${memberVO.id}" readonly/></td>
+                    <th>이름</th>
+                  	<td><input type="text" name="name" value="${memberVO.name}" readonly/></td>
+                    <th>성별</th>
+                  	<td><input type="text" name="gender" value="${memberVO.gender}" readonly/></td>
+                  </tr>
+                  <tr>
+                    <th>생년월일</th>
+               		<td><input type="text" name="birth" value="${memberVO.birth}" readonly/></td>
+                    <th>연락처</th>
+                    <td><input type="text" name="tel" value="${memberVO.tel}" /></td>
+                    <th>이메일</th>
+                    <td><input type="email" name="email" value="${memberVO.email}" /></td>
+                  </tr>
+                  <tr>
+                    <th>부서</th>
+                 	<td><input type="text" name="dnum" value="${memberVO.dnum}" readonly/></td>
+                    <th>직급/직책</th>
+                    <td><input type="text" name="job_id" value="${memberVO.job_id}" readonly/></td>
+                    <th>근무지</th>
+                    <td><input type="text" name="bnum" value="${memberVO.bnum}" readonly/></td>
+                  </tr>
+                  <tr>
+                    <th>근무형태</th>
+                    <td><input type="text" name="work_type" value="${memberVO.work_type}" readonly/></td>
+                    <th>재직구분</th>
+                    <td><input type="text" name="status" value="${memberVO.status}" readonly/></td>
+                    <th>입사일자</th>
+                    <td><input type="text" name="start_date" value="${memberVO.start_date}" readonly/></td>
+                  </tr>
+                  <tr>
+                    <td>사진등록/삭제</td>
+                    <th>우편번호</th>
+                    <td><input type="text" name="addr_num" value="${memberVO.addr_num}" /></td>
+                    <th>주소</th>
+                    <td><input type="text" name="addr" value="${memberVO.addr}" /></td>
+                    <th>상세주소</th>
+                    <td><input type="text" name="addr_detail" value="${memberVO.addr_detail}" /></td>
+                  </tr>
+                  <tr>                 
+                  	<td>사이즈:100x100, 5mb이내 등록가능</td>
+                    <th>예금주</th>
+                    <td><input type="text" name="account_name" value="${memberVO.account_name}" /></td>
+                    <th>계좌번호</th>
+                    <td><input type="text" name="account_num" value="${memberVO.account_num}" /></td>
+                    <th>은행명</th>
+                    <td><input type="text" name="bank_name" value="${memberVO.bank_name}" /></td>
+                  </tr>
+                </table>
 
-	<c:if test="${not empty error}">
-        <p style="color: red;">${error}</p>
-    </c:if>
-
-  <form action="/member/update" method="post">
-    <table border="1" cellspacing="0" cellpadding="10" style="width: 100%; border-collapse: collapse;">
-      <thead>
-        <tr>
-          <th colspan="2" style="background-color: #f2f2f2; text-align: center;">내정보</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="15" style="width: 150px; text-align: center; vertical-align: top;">
-            <img src="${memberVO.profile}" alt="증명사진" width="150px" height="auto" style="border-radius: 5px;">
-          </td>
-          <td style="font-weight: bold;">사원번호</td>
-          <td><input type="text" name="id" value="${memberVO.id}" readonly style="width: 100%;" readonly></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">비밀번호</td>
-          <td><input type="password" name="pw" value="${memberVO.pw}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">성명</td>
-          <td><input type="text" name="name" value="${memberVO.name}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">생년월일</td>
-          <td><input type="date" name="birth" value="${memberVO.birth}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">성별</td>
-          <td>
-            <select name="gender" style="width: 100%;">
-              <option value="M" ${memberVO.gender == 'M' ? 'selected' : ''}>남성</option>
-              <option value="F" ${memberVO.gender == 'F' ? 'selected' : ''}>여성</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">연락처</td>
-          <td><input type="text" name="tel" value="${memberVO.tel}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">이메일</td>
-          <td><input type="email" name="email" value="${memberVO.email}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">주소</td>
-          <td><input type="text" name="addr" value="${memberVO.addr}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">부서번호</td>
-          <td><input type="text" name="dnum" value="${memberVO.dnum}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">직급</td>
-          <td><input type="text" name="position" value="${memberVO.position}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">직무</td>
-          <td><input type="text" name="job_id" value="${memberVO.job_id}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">재직구분</td>
-          <td><input type="text" name="status" value="${memberVO.status}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">지점번호</td>
-          <td><input type="text" name="bnum" value="${memberVO.bnum}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">근무형태</td>
-          <td><input type="text" name="work_type" value="${memberVO.work_type}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">예금주</td>
-          <td><input type="text" name="bank_name" value="${memberVO.account_name}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">계좌번호</td>
-          <td><input type="text" name="account_num" value="${memberVO.account_num}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">은행명</td>
-          <td><input type="text" name="account_name" value="${memberVO.bank_name}" style="width: 100%;"></td>
-        </tr>
-        <tr>
-          <td style="font-weight: bold;">입사일자</td>
-          <td><input type="date" name="start_date" value="${memberVO.start_date}" style="width: 100%;"></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="text-align: center; margin-top: 20px;">
-      <input type="submit" value="수정완료" style="padding: 10px 20px; font-size: 16px;">
-    </div>
-  </form>
-</fieldset>
-
-          
-          
+                <!-- 버튼 영역 -->              
+                <div class="info-actions">               
+                  <button type="submit">저장하기</button>
+                  <button type="button" class="delete" onclick="location.href='/member/info'">취소하기</button>
+                </div>
+              </form>
+            </div>         
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->

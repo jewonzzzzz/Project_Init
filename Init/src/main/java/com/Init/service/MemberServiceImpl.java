@@ -41,12 +41,6 @@ public class MemberServiceImpl implements MemberService{
 		logger.debug("memberInfo(String userid) 실행");
 		return mdao.getMember(id);
 	}
-	// 회원정보 수정시 비밀번호 체크
-	@Override
-	public boolean checkPassword(String id, String inputPassword) {
-		String storedPassword = mdao.getPassword(id);
-        return storedPassword.equals(inputPassword);
-	}
 
 	@Override
 	public int memberUpdate(MemberVO uvo) {

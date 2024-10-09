@@ -67,12 +67,6 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSession.selectOne(NAMESPACE+".getMember",id);
 	}
 	
-	// 정보수정시 비밀번호 체크
-	@Override
-	public String getPassword(String id) {
-		return sqlSession.selectOne(NAMESPACE + ".getPassword", id);
-	}
-	
 	@Override
 	public int updateMember(MemberVO uvo) {
 		System.out.println(" DAO : updateMember(MemberVO uvo)");

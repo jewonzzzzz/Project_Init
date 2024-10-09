@@ -46,6 +46,78 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
+ 
+ <!------------------------------------------------------------------------------------------------------------------>
+  <style>
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .info-table th,
+      .info-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      .info-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+      }
+
+      .info-table img {
+        border-radius: 5px;
+        max-width: 150px;
+        height: auto;
+      }
+
+      .info-actions {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      .info-actions button {
+        padding: 8px 15px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        float: left;
+      }
+
+      .info-actions button.delete {
+        background-color: #f44336;
+      }
+
+      /* 탭 스타일 */
+      .tabs {
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        margin-bottom: 20px;
+      }
+
+      .tabs a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #333;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        background-color: #f4f4f4;
+        margin-right: 5px;
+      }
+
+      .tabs a.active {
+        background-color: white;
+        font-weight: bold;
+      }
+    </style>
+ <!------------------------------------------------------------------------------------------------------------------>
+ 
   </head>
   <body>
     <div class="wrapper">
@@ -58,89 +130,79 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-	
-<table border="1" cellspacing="0" cellpadding="10" style="width: 100%; border-collapse: collapse;">
-  <thead>
-    <tr>
-      <th colspan="2" style="background-color: #f2f2f2; text-align: center;">내정보</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="15" style="width: 150px; text-align: center; vertical-align: top;">
-        <img src="${memberVO.profile}" alt="증명사진" width="150px" height="auto" style="border-radius: 5px;">
-      </td>
-      <td style="font-weight: bold;">사원번호</td>
-      <td>${memberVO.id}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">성명</td>
-      <td>${memberVO.name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">생년월일</td>
-      <td>${memberVO.birth}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">성별</td>
-      <td>${memberVO.gender}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">연락처</td>
-      <td>${memberVO.tel}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">이메일</td>
-      <td>${memberVO.email}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">주소</td>
-      <td>${memberVO.addr}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">부서번호</td>
-      <td>${memberVO.dnum}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">직급</td>
-      <td>${memberVO.position}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">직무</td>
-      <td>${memberVO.job_id}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">재직구분</td>
-      <td>${memberVO.status}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">지점번호</td>
-      <td>${memberVO.bnum}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">근무형태</td>
-      <td>${memberVO.work_type}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">예금주</td>
-      <td>${memberVO.account_name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">계좌번호</td>
-      <td>${memberVO.account_num}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">은행명</td>
-      <td>${memberVO.bank_name}</td>
-    </tr>
-    <tr>
-      <td style="font-weight: bold;">입사일자</td>
-      <td>${memberVO.start_date}</td>
-    </tr>
-  </tbody>
-</table>
-<h2><a href="/member/update"> 수정하기</a></h2>
-          
+    <!-- 탭 -->
+            <div class="tabs">
+              <a href="" class="active">내정보</a>
+              <a href="">자격증</a>
+              <a href="">인사발령</a>
+              <a href="">포상/징계</a>
+              <a href="">인사평가</a>
+              <!-- 추가 탭 -->
+            </div>
+
+<div class="info-container">
+            <!-- 사진 및 기본 정보 -->
+              <table class="info-table" style="width: 70%;">
+                <tr>
+                  <td rowspan="4" style="width: 10%;">
+                    <img src="${memberVO.profile}" alt="증명사진" />
+                  </td>
+                  <th>사원번호</th>
+                  <td>${memberVO.id}</td>              
+                  <th>이름</th>
+                  <td>${memberVO.name}</td>           
+                  <th>성별</th>
+                  <td>${memberVO.gender}</td>
+                </tr>
+                <tr>                
+        		  <th>생년월일</th>
+                  <td>${memberVO.birth}</td>
+                  <th>연락처</th>
+                  <td>${memberVO.tel}</td>
+                  <th>이메일</th>
+                  <td>${memberVO.email}</td>           
+                </tr>
+                <tr>
+                  <th>부서</th>
+                  <td>${memberVO.dnum}</td>
+                  <th>직급/직책</th>
+                  <td>${memberVO.position} / ${memberVO.job_id}</td>
+                  <th>근무지</th>
+                  <td>${memberVO.bnum}</td>
+                </tr>
+                <tr>                
+                  <th>근무형태</th>
+                  <td>${memberVO.work_type}</td>
+                  <th>재직구분</th>
+                  <td>${memberVO.status}</td>
+                  <th>입사일자</th>
+                  <td>${memberVO.start_date}</td>
+                </tr>
+                <tr>
+                  <td>사진등록/삭제</td>
+              	  <th>우편번호</th>
+                  <td>${memberVO.addr_num}</td>
+                  <th>주소</th>
+                  <td>${memberVO.addr}</td>
+                  <th>상세주소</th>
+                  <td>${memberVO.addr_detail}</td>
+                </tr>
+               	<tr>    
+               	  <td>사이즈:100x100, 5mb이내 등록가능</td>            
+                  <th>예금주</th>
+                  <td>${memberVO.account_name}</td>
+                  <th>계좌번호</th>
+                  <td>${memberVO.account_num}</td>
+               	  <th>은행명</th>
+                  <td>${memberVO.bank_name}</td>
+                </tr>               
+              </table>                        
+            </div>                    
+
+            <!-- 버튼 영역 -->
+            <div class="info-actions">
+              <a href="/member/update"><button>수정하기</button></a>
+            </div>
           
 <!------------------------------------------------------------------------------------------------------------------>
           </div>

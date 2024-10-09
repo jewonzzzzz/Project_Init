@@ -128,21 +128,12 @@ public class MemberController {
 	logger.debug("전달받은 정보(파라메터)를 저장");
 	logger.debug(" vo : "+vo);
 	
-	// 입력한 비밀번호 확인
-    boolean isPasswordCorrect = mService.checkPassword(id, inputPassword);
-
-    if (!isPasswordCorrect) {
-        // 비밀번호가 일치하지 않을 경우 에러 메시지
-        model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
-        return "/member/update";  // 다시 수정 페이지로
-    }
-	
 	int result = mService.memberUpdate(vo);				
 	if(result == 0) {	
 	return "redirect:/member/update";
 }
 	// 수정 성공
-	return "redirect:/member/main";
+	return "redirect:/member/info";
 }
 	
 	

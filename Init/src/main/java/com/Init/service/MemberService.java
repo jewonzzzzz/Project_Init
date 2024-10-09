@@ -17,6 +17,4 @@ public interface MemberService {
 	public MemberVO memberInfo(String id);
 	public int memberUpdate(MemberVO uvo);
 	
-	// 회원정보 수정시 비밀번호 확인
-	boolean checkPassword(String id, String inputPassword);
 }

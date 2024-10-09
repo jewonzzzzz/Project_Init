@@ -19,8 +19,5 @@ public interface MemberDAO {
 	public int updateMember(MemberVO uvo);
 	// 정보수정 이력
 	void insertHisMember(MemberVO uvo);
-	// 비밀번호 체크
-	public String getPassword(String id);
-	
 	
 }
