@@ -128,5 +128,29 @@ public class AttendanceController {
             return "Error generating QR code";
         }
     }
-  
+ 
+    // 보완예정 삭제 ㄴ
+    
+    @GetMapping("/attendanceMain")
+    public String handleAttendance(@RequestParam String emp_id, Model model) {
+        // 출근 여부 확인
+        boolean isCheckedIn = attendanceService.checkIfCheckedIn(emp_id);
+
+        String message;
+        if (isCheckedIn) {
+            // 이미 출근한 경우 퇴근 처리
+            attendanceService.recordCheckOut(emp_id);
+            message = emp_id + "님의 퇴근이 기록되었습니다.";
+        } else {
+            // 출근하지 않은 경우 출근 처리
+            attendanceService.recordCheckIn(emp_id);
+            message = emp_id + "님의 출근이 기록되었습니다.";
+        }
+
+        model.addAttribute("message", message);
+        return "attendanceResult"; // 결과를 표시할 JSP 페이지
+    }
+    
+    
+    
 }

@@ -14,6 +14,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/1.0.0/jquery.qrcode.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
+    
+    <!--웹소켓  -->
+        <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <!-- WebSocket 및 QR 코드 스캔 스크립트 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
+    
+    
+    
+    
+    
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <link
       rel="icon"
@@ -61,77 +71,18 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-
- 
- <script>
-    // QR 코드 스캔 설정
-    const html5QrCode = new Html5Qrcode("reader");
-
-    // QR 코드 인식 시 동작
-    const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-        // QR 코드에서 emp_id 추출 (decodedText가 emp_id를 포함한다고 가정)
-        const emp_id = decodedText;
-
-        // 출근 시간 기록
-        $.ajax({
-            url: "${pageContext.request.contextPath}/Attendance/checkin", // 출근 기록을 위한 URL
-            type: "POST",
-            data: { emp_id: emp_id },
-            success: function(response) {
-                alert(response); // 출근 기록 성공 메시지 표시
-
-                // 퇴근 시간 기록
-                $.ajax({
-                    url: "${pageContext.request.contextPath}/Attendance/checkout", // 퇴근 기록을 위한 URL
-                    type: "POST",
-                    data: { emp_id: emp_id },
-                    success: function(response) {
-                        alert(response); // 퇴근 기록 성공 메시지 표시
-                        
-                        // QR 코드 스캔 중지
-                        html5QrCode.stop();
-                    },
-                    error: function(xhr, status, error) {
-                        alert("퇴근 기록에 실패했습니다.");
-                    }
-                });
-            },
-            error: function(xhr, status, error) {
-                alert("출근 기록에 실패했습니다.");
-            }
-        });
-    };
-
-    // QR 코드 인식 시작
-    html5QrCode.start(
-        { facingMode: "environment" }, // 카메라 모드
-        {
-            fps: 10, // 초당 프레임 수
-            qrbox: 250 // QR 코드 영역 크기
-        },
-        qrCodeSuccessCallback
-    )
-    .catch(err => {
-        console.error("QR 코드 스캔 오류:", err);
-    });
-
+   
+   
+  
+    <div id="attendanceInfo">
+        <p id="attendanceMessage">아직 출퇴근 기록이 없습니다.</p>
+    </div>
     
+    <!-- ZXing QR 코드 스캔을 위한 div -->
+    <div id="reader" style="width: 300px; height: 300px;"></div>
+
    
     
-    
-    
-    
-    
-    
-    
-    </script>
-
-  
-<!-- QR 출근  -->
-
-	
-	
-	
 	
 	
 	
