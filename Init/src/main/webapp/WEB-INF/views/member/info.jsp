@@ -49,6 +49,11 @@
  
  <!------------------------------------------------------------------------------------------------------------------>
   <style>
+  	  .page-title {
+	  font-size: 24px;
+	  font-weight: bold;
+	  margin-bottom: 20px;
+}
       .info-table {
         width: 100%;
         border-collapse: collapse;
@@ -76,18 +81,17 @@
 
       .info-actions {
         margin-top: 20px;
-        text-align: right;
+        text-align: left; 
       }
 
       .info-actions button {
         padding: 8px 15px;
-        margin-left: 10px;
+        margin-left: 1050px;
         border: none;
         border-radius: 4px;
         background-color: #4caf50;
         color: white;
-        cursor: pointer;
-        float: left;
+        cursor: pointer;     
       }
 
       .info-actions button.delete {
@@ -99,6 +103,7 @@
         display: flex;
         border-bottom: 2px solid #ddd;
         margin-bottom: 20px;
+        margin-top: 30px;
       }
 
       .tabs a {
@@ -130,79 +135,78 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-    <!-- 탭 -->
-            <div class="tabs">
-              <a href="" class="active">내정보</a>
-              <a href="">자격증</a>
-              <a href="">인사발령</a>
-              <a href="">포상/징계</a>
-              <a href="">인사평가</a>
-              <!-- 추가 탭 -->
-            </div>
-
+ <h1 class="page-title">내정보</h1>
 <div class="info-container">
             <!-- 사진 및 기본 정보 -->
               <table class="info-table" style="width: 70%;">
                 <tr>
-                  <td rowspan="4" style="width: 10%;">
-                    <img src="${memberVO.profile}" alt="증명사진" />
+                  <td colspan="2" rowspan="3" style="width: 10%;">
+                    <img src="${memberVO.emp_profile}" alt="증명사진" />
                   </td>
                   <th>사원번호</th>
-                  <td>${memberVO.id}</td>              
+                  <td>${memberVO.emp_id}</td>              
                   <th>이름</th>
-                  <td>${memberVO.name}</td>           
+                  <td>${memberVO.emp_name}</td>           
                   <th>성별</th>
-                  <td>${memberVO.gender}</td>
+                  <td>${memberVO.emp_gender}</td>
                 </tr>
                 <tr>                
         		  <th>생년월일</th>
-                  <td>${memberVO.birth}</td>
-                  <th>연락처</th>
-                  <td>${memberVO.tel}</td>
-                  <th>이메일</th>
-                  <td>${memberVO.email}</td>           
-                </tr>
-                <tr>
-                  <th>부서</th>
-                  <td>${memberVO.dnum}</td>
-                  <th>직급/직책</th>
-                  <td>${memberVO.position} / ${memberVO.job_id}</td>
-                  <th>근무지</th>
-                  <td>${memberVO.bnum}</td>
-                </tr>
-                <tr>                
-                  <th>근무형태</th>
-                  <td>${memberVO.work_type}</td>
-                  <th>재직구분</th>
-                  <td>${memberVO.status}</td>
-                  <th>입사일자</th>
-                  <td>${memberVO.start_date}</td>
-                </tr>
-                <tr>
-                  <td>사진등록/삭제</td>
-              	  <th>우편번호</th>
-                  <td>${memberVO.addr_num}</td>
+                  <td>${memberVO.emp_birth}</td>
                   <th>주소</th>
-                  <td>${memberVO.addr}</td>
-                  <th>상세주소</th>
-                  <td>${memberVO.addr_detail}</td>
+                  <td>${memberVO.emp_addr}</td> 
+                  <th>연락처</th>
+                  <td>${memberVO.emp_tel}</td>                        
                 </tr>
-               	<tr>    
-               	  <td>사이즈:100x100, 5mb이내 등록가능</td>            
+                <tr>
+              	  <th>이메일</th>
+                  <td>${memberVO.emp_email}</td> 
+                  <th>부서</th>
+                  <td>${memberVO.emp_dnum}</td>
+                  <th>직급/직책</th>
+                  <td>${memberVO.emp_position} / ${memberVO.emp_job}</td>                
+                </tr>
+                <tr>
+               	  <td>등록</td>
+                  <td>삭제</td>                         
+                  <th>근무형태</th>
+                  <td>${memberVO.emp_work_type}</td>
+                  <th>근무지</th>
+                  <td>${memberVO.emp_bnum}</td>               
+                  <th>입사일자</th>
+                  <td>${memberVO.emp_start_date}</td>
+                </tr>                                                    
+             </table>     	
+            </div>
+             
+            <!-- 버튼 영역 -->                      
+            <div class="info-actions">
+              <a href="/member/update"><button>수정</button></a>
+            </div>
+            
+            <!-- 탭 -->
+            <div class="tabs">
+              <a href="" class="active">계좌정보</a>
+              <a href="">자격증</a>
+              <a href="">인사발령</a>
+              <a href="">포상/징계</a>
+              <a href="">인사평가</a>              
+            </div>
+              
+            <div class="info-container">
+               	<table class="info-table" style="width: 70%;">
+               	<tr>                   	           
                   <th>예금주</th>
-                  <td>${memberVO.account_name}</td>
+                  <td>${memberVO.emp_account_name}</td>
                   <th>계좌번호</th>
-                  <td>${memberVO.account_num}</td>
+                  <td>${memberVO.emp_account_num}</td>
                	  <th>은행명</th>
-                  <td>${memberVO.bank_name}</td>
+                  <td>${memberVO.emp_bank_name}</td>
                 </tr>               
-              </table>                        
+                </table>                   
             </div>                    
 
-            <!-- 버튼 영역 -->
-            <div class="info-actions">
-              <a href="/member/update"><button>수정하기</button></a>
-            </div>
+            
           
 <!------------------------------------------------------------------------------------------------------------------>
           </div>

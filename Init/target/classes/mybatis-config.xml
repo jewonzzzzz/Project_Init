@@ -6,7 +6,7 @@
 <configuration>
 
 	<typeAliases>
-		<package name="com.Init.controller"/>
+		<package name="com.Init.domain"/>
 	</typeAliases>
 
 </configuration>

@@ -56,12 +56,12 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 
-	<C:if test="${empty sessionScope.id}">
+	<C:if test="${empty sessionScope.emp_id}">
 	<C:redirect url="/member/login"/>
 	</C:if>
 	
-	${sessionScope.id} <br>
-	<h1> ${id}님 환영합니다. </h1>
+	${sessionScope.emp_id} <br>
+	<h1> ${emp_id}님 환영합니다. </h1>
 	<input type="button" value="로그아웃"
 		   onclick="location.href='/member/logout';">
 		   
@@ -71,7 +71,7 @@
 	<h2><a href="/member/update"> 회원정보 수정(update)</a></h2>
 	<h2><a href="/member/delete"> 회원정보 삭제(delete)</a></h2>
 	<!-- 관리자 기능(사용자 admin일때 사용가능 -->
-	<C:if test="${!empty id && id.equals('000000')}">
+	<C:if test="${!empty emp_level && emp_level.equals('1')}">
 	<h2><a href="/member/list"> 회원정보 목록(list)</a></h2>
 	
 	</C:if>               

@@ -48,6 +48,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/demo.css" />
   <!------------------------------------------------------------------------------------------------------------------>
  <style>
+   
+  	  .page-title {
+	   font-size: 24px;
+	   font-weight: bold;
+	   margin-bottom: 20px;
+	 }
+	 
       .info-table {
         width: 100%;
         border-collapse: collapse;
@@ -75,12 +82,12 @@
 
       .info-actions {
         margin-top: 20px;
-        text-align: right;
+        text-align: left;
+        margin-left: 990px;                     
       }
 
       .info-actions button {
-        padding: 8px 15px;
-        margin-left: 10px;
+        padding: 8px 15px;  
         border: none;
         border-radius: 4px;
         background-color: #4caf50;
@@ -97,6 +104,7 @@
         display: flex;
         border-bottom: 2px solid #ddd;
         margin-bottom: 20px;
+        margin-top: 60px;
       }
 
       .tabs a {
@@ -113,6 +121,11 @@
         background-color: white;
         font-weight: bold;
       }
+      
+      input[readonly] {
+	    background-color: #f0f0f0; /* 원하는 색상으로 변경 */
+	    color: #333; /* 텍스트 색상도 조절 가능 */
+	  }
     </style>
  <!------------------------------------------------------------------------------------------------------------------>
  
@@ -127,84 +140,82 @@
         </div>
         <div class="container">
           <div class="page-inner">
-<!------------------------------------------------------------------------------------------------------------------>
-       
-<!-- 탭 -->
-            <div class="tabs">
-              <a href="" class="active">내정보</a>
-              <a href="">자격증</a>
-              <a href="">인사발령</a>
-              <a href="">포상/징계</a>
-              <a href="">인사평가</a>
-              <!-- 추가 탭 -->
-            </div>
-
+<!------------------------------------------------------------------------------------------------------------------>      
+ <h1 class="page-title">내정보</h1>
             <div class="info-container">
               <!-- 사진 및 기본 정보 입력 -->
               <form action="/member/update" method="POST">
                 <table class="info-table" style="width: 70%;">
                   <tr>
-                    <td rowspan="4" style="width: 10%;">
-                      <img src="${memberVO.profile}" alt="증명사진" />
+                    <td colspan="2" rowspan="3" style="width: 10%;">
+                      <img src="${memberVO.emp_profile}" alt="증명사진" />
                     </td>
                     <th>사원번호</th>
-                 	<td><input type="text" name="id" value="${memberVO.id}" readonly/></td>
+                 	<td><input type="text" name="id" value="${memberVO.emp_id}" readonly/></td>
                     <th>이름</th>
-                  	<td><input type="text" name="name" value="${memberVO.name}" readonly/></td>
+                  	<td><input type="text" name="name" value="${memberVO.emp_name}" readonly/></td>
                     <th>성별</th>
-                  	<td><input type="text" name="gender" value="${memberVO.gender}" readonly/></td>
+                  	<td><input type="text" name="gender" value="${memberVO.emp_gender}" readonly/></td>
                   </tr>
                   <tr>
                     <th>생년월일</th>
-               		<td><input type="text" name="birth" value="${memberVO.birth}" readonly/></td>
-                    <th>연락처</th>
-                    <td><input type="text" name="tel" value="${memberVO.tel}" /></td>
-                    <th>이메일</th>
-                    <td><input type="email" name="email" value="${memberVO.email}" /></td>
-                  </tr>
-                  <tr>
-                    <th>부서</th>
-                 	<td><input type="text" name="dnum" value="${memberVO.dnum}" readonly/></td>
-                    <th>직급/직책</th>
-                    <td><input type="text" name="job_id" value="${memberVO.job_id}" readonly/></td>
-                    <th>근무지</th>
-                    <td><input type="text" name="bnum" value="${memberVO.bnum}" readonly/></td>
-                  </tr>
-                  <tr>
-                    <th>근무형태</th>
-                    <td><input type="text" name="work_type" value="${memberVO.work_type}" readonly/></td>
-                    <th>재직구분</th>
-                    <td><input type="text" name="status" value="${memberVO.status}" readonly/></td>
-                    <th>입사일자</th>
-                    <td><input type="text" name="start_date" value="${memberVO.start_date}" readonly/></td>
-                  </tr>
-                  <tr>
-                    <td>사진등록/삭제</td>
-                    <th>우편번호</th>
-                    <td><input type="text" name="addr_num" value="${memberVO.addr_num}" /></td>
+               		<td><input type="text" name="birth" value="${memberVO.emp_birth}" readonly/></td>
                     <th>주소</th>
-                    <td><input type="text" name="addr" value="${memberVO.addr}" /></td>
-                    <th>상세주소</th>
-                    <td><input type="text" name="addr_detail" value="${memberVO.addr_detail}" /></td>
+                    <td><input type="text" name="addr" value="${memberVO.emp_addr}" /></td>
+                    <th>연락처</th>
+                    <td><input type="text" name="tel" value="${memberVO.emp_tel}" /></td>                  
                   </tr>
-                  <tr>                 
-                  	<td>사이즈:100x100, 5mb이내 등록가능</td>
-                    <th>예금주</th>
-                    <td><input type="text" name="account_name" value="${memberVO.account_name}" /></td>
-                    <th>계좌번호</th>
-                    <td><input type="text" name="account_num" value="${memberVO.account_num}" /></td>
-                    <th>은행명</th>
-                    <td><input type="text" name="bank_name" value="${memberVO.bank_name}" /></td>
+                  <tr>
+                  	<th>이메일</th>
+                    <td><input type="email" name="email" value="${memberVO.emp_email}" /></td>
+                    <th>부서</th>
+                 	<td><input type="text" name="dnum" value="${memberVO.emp_dnum}" readonly/></td>
+                    <th>직급/직책</th>
+                    <td><input type="text" name="job_id" value="${memberVO.emp_job}" readonly/></td>                   
                   </tr>
-                </table>
-
+                  <tr>
+                    <td>등록</td> 
+                    <td>삭제</td> 
+                    <th>근무형태</th>
+                    <td><input type="text" name="work_type" value="${memberVO.emp_work_type}" readonly/></td>                   
+                    <th>근무지</th>
+                    <td><input type="text" name="bnum" value="${memberVO.emp_bnum}" readonly/></td>                   
+                  	<th>입사일자</th>
+                    <td><input type="text" name="start_date" value="${memberVO.emp_start_date}" readonly/></td>
+                  </tr>
+                  </table>     	
+                  </div> 
+                  
                 <!-- 버튼 영역 -->              
                 <div class="info-actions">               
-                  <button type="submit">저장하기</button>
-                  <button type="button" class="delete" onclick="location.href='/member/info'">취소하기</button>
+                  <button type="submit">저장</button>
+                  <button type="button" class="delete" onclick="location.href='/member/info'">취소</button>
                 </div>
-              </form>
-            </div>         
+                  
+                    <!-- 탭 -->
+		            <div class="tabs">
+		              <a href="" class="active">계좌정보</a>
+		              <a href="">자격증</a>
+		              <a href="">인사발령</a>
+		              <a href="">포상/징계</a>
+		              <a href="">인사평가</a>
+		              <!-- 추가 탭 -->
+		            </div>
+                
+                  
+                <div class="info-container">
+               	<table class="info-table" style="width: 70%;">           
+                  <tr>                 
+                    <th>예금주</th>
+                    <td><input type="text" size=6 name="account_name" value="${memberVO.emp_account_name}" /></td>
+                    <th>계좌번호</th>
+                    <td><input type="text" name="account_num" value="${memberVO.emp_account_num}" /></td>
+                    <th>은행명</th>                   
+                    <td><input type="text" name="bank_name" value="${memberVO.emp_bank_name}" /></td>              
+				  </tr>
+				 </table>                   
+                 </div>        
+                                        
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->

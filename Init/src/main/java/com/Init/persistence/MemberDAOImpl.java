@@ -47,13 +47,13 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public MemberVO loginMember(String id, String pw) {
-		System.out.println(" DAO : loginMember(String userid, String userpw) 실행");
+	public MemberVO loginMember(String emp_id, String emp_pw) {
+		System.out.println(" DAO : loginMember(String emp_id, String emp_pw) 실행");
 	
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
-		paramMap.put("id", id);
-		paramMap.put("pw", pw);
+		paramMap.put("emp_id", emp_id);
+		paramMap.put("emp_pw", emp_pw);
 		
 		MemberVO resultVO = sqlSession.selectOne(NAMESPACE+".loginMember",paramMap);
 	
@@ -61,10 +61,10 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-	public MemberVO getMember(String id) {
-		System.out.println(" DAO : getMember(String id)");
+	public MemberVO getMember(String emp_id) {
+		System.out.println(" DAO : getMember(String emp_id)");
 		
-		return sqlSession.selectOne(NAMESPACE+".getMember",id);
+		return sqlSession.selectOne(NAMESPACE+".getMember",emp_id);
 	}
 	
 	@Override

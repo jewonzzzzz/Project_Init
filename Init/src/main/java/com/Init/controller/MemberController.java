@@ -72,7 +72,7 @@ public class MemberController {
 			return "redirect:/member/login";
 			}
 			// 사용자의 아이디정보를 세션 영역에 저장
-			session.setAttribute("id", resultVO.getId());
+			session.setAttribute("emp_id", resultVO.getEmp_id());
 				
 			// 로그인 성공! 메인 페이지로 이동
 			return "redirect:/member/main";
@@ -96,10 +96,10 @@ public class MemberController {
 	public void infoMemberGET(HttpSession session, Model model) {
 	logger.debug("/member/info -> infoMemberGET() 실행");
 				
-	String id = (String) session.getAttribute("id");
-	logger.debug("아이디 : "+id);
+	String emp_id = (String) session.getAttribute("emp_id");
+	logger.debug("아이디 : "+emp_id);
 	
-	MemberVO resultVO = mService.memberInfo(id);
+	MemberVO resultVO = mService.memberInfo(emp_id);
 	logger.debug(" vo : "+resultVO);
 				
 			
@@ -113,9 +113,9 @@ public class MemberController {
 	logger.debug("/member/update -> updateMemberGET() 실행");				
 	logger.debug("기존의 회원정보를 DB에서 가져오기");
 	
-	String id = (String) session.getAttribute("id");
+	String emp_id = (String) session.getAttribute("emp_id");
 				
-	model.addAttribute(mService.memberInfo(id));				
+	model.addAttribute(mService.memberInfo(emp_id));				
 	logger.debug("연결된 뷰페이지 출력(/views/member/update.jsp)");
 				
 	return "/member/update";
