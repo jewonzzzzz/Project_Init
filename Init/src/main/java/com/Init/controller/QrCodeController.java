@@ -1,41 +1,50 @@
 package com.Init.controller;
 
 
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 @RestController
-public class QrCodeController {
+public class QrCodeController{
 
-    @RequestMapping(value = "/getQR", method = RequestMethod.GET)
-    public void getQR(@RequestParam("code") String code,
-                      @RequestParam(value = "width", defaultValue = "200") int width,
-                      @RequestParam(value = "height", defaultValue = "200") int height,
-                      HttpServletResponse response) throws IOException {
+    @GetMapping("/getQR")
+    public ResponseEntity<byte[]> createQr(@RequestParam String emp_id) {
+        String mainUrl = "http://localhost:8088/Attendance/attendanceMain";
+        String qrCodeUrl = mainUrl + "?emp_id=" + emp_id;
+
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try {
-            response.setContentType("image/png");
-            OutputStream os = response.getOutputStream();
-            BitMatrix bitMatrix = qrCodeWriter.encode(code, BarcodeFormat.QR_CODE, width, height);
-            MatrixToImageWriter.writeToStream(bitMatrix, "png", os);
-            os.flush();
-            os.close();
+            // QR 코드 생성
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 200, 200);
+
+            // 이미지를 바이트 배열로 변환
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", baos);
+
+            // ResponseEntity로 바이트 배열 반환
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(baos.toByteArray());
         } catch (WriterException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            // QR 코드 생성 오류 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("QR 코드 생성에 실패했습니다.".getBytes());
+        } catch (IOException e) {
+            // 이미지 변환 오류 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("이미지 변환에 실패했습니다.".getBytes());
         }
     }
 }

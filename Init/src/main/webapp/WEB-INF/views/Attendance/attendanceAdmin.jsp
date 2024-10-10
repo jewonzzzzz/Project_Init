@@ -10,6 +10,24 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Fonts and icons -->
     
+    
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/demo.css" />
+    
+    
+     <style>
+        #qrFrame {
+            width: 200px;
+            height: 200px;
+            border: none;
+            overflow: hidden; /* 스크롤바 숨기기 */
+        }
+    </style>
+    
+    
+    
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
       WebFont.load({
@@ -34,6 +52,16 @@
             margin-top: 20px;
             display: none; /* 처음에는 QR 코드 숨김 */
         }
+        
+        
+        #qrFrame {
+            width: 200px;
+            height: 200px;
+            border: none;
+            overflow: hidden; /* 스크롤바 숨기기 */
+        }
+    
+        
     </style>
     
     
@@ -74,17 +102,56 @@
         <ul id="checkTimeList"></ul>
     </div>
 
-
-<!-- JSP 코드 -->
-<form action="${pageContext.request.contextPath}/getQR" method="get" target="qrFrame">
-    <label for="code">직원 ID 입력:</label>
-    <input type="text" id="code" name="code" placeholder="직원 ID 입력">
+   <form action="${pageContext.request.contextPath}/getQR" method="get" target="qrFrame" onsubmit="showQrModal(event)">
+    <label for="emp_id">직원 ID 입력:</label>
+    <input type="text" id="emp_id" name="emp_id" placeholder="직원 ID 입력" required>
     <button type="submit">QR 코드 생성</button>
 </form>
 
-<!-- QR 코드 이미지를 표시할 iframe -->
-<iframe id="qrFrame" name="qrFrame" style="width:200px; height:200px; border:none; margin-top:20px;"></iframe>
+<!-- QR 코드 모달 -->
+<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalLabel">QR 코드</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeQrModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="qrFrame" name="qrFrame" style="width:100%; height:200px; border:none;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeQrModal()">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    function showQrModal(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+        var form = event.target;
+        var actionUrl = form.action + "?emp_id=" + document.getElementById('emp_id').value;
+
+        // iframe에 QR 코드 URL 로드
+        document.getElementById('qrFrame').src = actionUrl;
+
+        // 모달 보여주기
+        $('#qrModal').modal('show');
+    }
+
+    function closeQrModal() {
+        // 모달을 닫고 원래 상태로 되돌리기
+        $('#qrModal').modal('hide'); // Bootstrap 모달 닫기
+        document.getElementById('qrFrame').src = ''; // iframe을 초기화하여 내용 제거
+    }
+
+    // 모달이 완전히 숨겨졌을 때 실행되는 이벤트
+    $('#qrModal').on('hidden.bs.modal', function () {
+        document.getElementById('qrFrame').src = ''; // 모달이 닫힐 때 iframe 초기화
+    });
+</script>
 
 
 <!------------------------------------------------------------------------------------------------------------------>
