@@ -4,7 +4,10 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
-
+<!--QR 라이브러리  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Fonts and icons -->
     
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -25,7 +28,13 @@
         },
       });
     </script>
-    
+    <!--qr코드 숨김 스타일  -->
+    <style>
+        #qrcode {
+            margin-top: 20px;
+            display: none; /* 처음에는 QR 코드 숨김 */
+        }
+    </style>
     
     
     
@@ -65,31 +74,18 @@
         <ul id="checkTimeList"></ul>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#checkTimeButton').click(function() {
-                var empId = $('#emp_id').val();
-                
-                // AJAX 요청
-                $.ajax({
-                    type: 'POST',
-                    url: '/Attendance/attendanceData',
-                    data: { emp_id: empId },
-                    success: function(data) {
-                        // 기존 데이터 지우기
-                        $('#checkTimeList').empty();
-                        // 조회된 데이터 표시
-                        $.each(data, function(index, checkTime) {
-                            $('#checkTimeList').append('<li>' + checkTime.check_in + ' - ' + checkTime.check_out + '</li>');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        alert("Error: " + error);
-                    }
-                });
-            });
-        });
-    </script>
+
+<!-- JSP 코드 -->
+<form action="${pageContext.request.contextPath}/getQR" method="get" target="qrFrame">
+    <label for="code">직원 ID 입력:</label>
+    <input type="text" id="code" name="code" placeholder="직원 ID 입력">
+    <button type="submit">QR 코드 생성</button>
+</form>
+
+<!-- QR 코드 이미지를 표시할 iframe -->
+<iframe id="qrFrame" name="qrFrame" style="width:200px; height:200px; border:none; margin-top:20px;"></iframe>
+
+
 
 <!------------------------------------------------------------------------------------------------------------------>
           </div>

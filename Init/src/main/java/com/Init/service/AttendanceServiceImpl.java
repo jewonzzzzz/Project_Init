@@ -11,74 +11,67 @@ import org.springframework.stereotype.Service;
 import com.Init.domain.AttendanceVO;
 import com.Init.persistence.AttendanceDAO;
 import com.Init.persistence.AttendanceDAOImpl;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 
 @Service
 public class AttendanceServiceImpl implements AttendanceService {
-	private static final Logger logger = LoggerFactory.getLogger(AttendanceDAOImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(AttendanceServiceImpl.class);
 
-    @Inject
-    private AttendanceDAO attendanceDAO;
+	@Inject
+	private AttendanceDAO attendanceDAO;
 
-    @Override
-    public List<AttendanceVO> getAllCheckTime(String emp_id) {
-    	logger.debug("service 동작 ");
-    	
-    	
-        return attendanceDAO.getAllCheckTime(emp_id);
-    }
+	@Override
+	public List<AttendanceVO> getAllCheckTime(String emp_id) {
+		logger.debug("service 동작 ");
 
-    @Override
-    public void updateAllTime(AttendanceVO uvo) {
-        attendanceDAO.updateAllTime(uvo);
-    }
+		return attendanceDAO.getAllCheckTime(emp_id);
+	}
 
-    @Override
-    public List<AttendanceVO> getMemberWorkStatus(String emp_id) {
-        return attendanceDAO.getMemberWorkStatus(emp_id);
-    }
+// 출퇴근 로직
+	@Override
+	public void checkIn(AttendanceVO attendance) {
+		attendanceDAO.checkIn(attendance);
+	}
 
-    @Override
-    public List<AttendanceVO> getMemberCalendar(AttendanceVO gvo) {
-        return attendanceDAO.getMemberCalendar(gvo);
-    }
+	@Override
+	public void checkOut(AttendanceVO attendance) {
+		attendanceDAO.checkOut(attendance);
+	}
 
-    @Override
-    public void insertAllTime(AttendanceVO attendance) {
-        attendanceDAO.insertAllTime(attendance);
-    }
-
-    @Override
-    public void insertWorkStatus(String workform_status) {
-        attendanceDAO.insertWorkStatus(workform_status);
-    }
-
-    @Override
-    public void updateWorkStatus(String emp_id, String workform_status) {
-        attendanceDAO.updateWorkStatus(emp_id, workform_status);
-    }
-
-    @Override
-    public void insertCheckin(String check_in) {
-        attendanceDAO.insertCheckin(check_in);
-    }
-
-    @Override
-    public void insertCheckOutTime(String check_out) {
-        attendanceDAO.insertCheckOutTime(check_out);
-    }
-
-    @Override
-    public AttendanceVO getCheckTime(String emp_id) {
-        return attendanceDAO.getCheckTime(emp_id);
-    }
-
-    @Override
-    public void updateCheckTime(AttendanceVO attendance) {
-        attendanceDAO.updateCheckTime(attendance);
-    }
-
-    @Override
-    public AttendanceVO getWorkStatus(String emp_id) {
-        return attendanceDAO.getWorkStatus(emp_id);
-    }
+	
+	//qr  생성 로직
+	public String generateQrCode(String emp_id) {
+	    try {
+	        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+	        BitMatrix bitMatrix = qrCodeWriter.encode(emp_id, BarcodeFormat.QR_CODE, 200, 200);
+	        
+	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", outputStream);
+	        
+	        // Base64로 인코딩하여 반환
+	        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+	    } catch (WriterException e) {
+	        // QR 코드 생성 관련 예외 처리
+	        System.err.println("QR 코드 작성 오류: " + e.getMessage());
+	        return null;
+	    } catch (IOException e) {
+	        // I/O 관련 예외 처리
+	        System.err.println("입출력 오류: " + e.getMessage());
+	        return null;
+	    } catch (Exception e) {
+	        // 일반 예외 처리
+	        System.err.println("일반 오류: " + e.getMessage());
+	        return null;
+	    }
+	}
+	
+	
 }
