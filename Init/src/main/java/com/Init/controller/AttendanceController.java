@@ -1,30 +1,39 @@
 package com.Init.controller;
 
-import org.slf4j.Logger; 
+import java.awt.image.BufferedImage;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.Init.service.AttendanceService;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Init.domain.AttendanceVO;
 import com.Init.service.AttendanceService;
+import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.File;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 @Controller
 @RequestMapping(value = "/Attendance/*")
 public class AttendanceController {
@@ -80,104 +89,44 @@ public class AttendanceController {
     }
 
 
-
-    // 모든 시간 수정
-    @PostMapping("/updateAllTime")
-    public String updateAllTime(@ModelAttribute AttendanceVO attendance) {
-        // 서비스 호출하여 시간 정보 업데이트
-        attendanceService.updateAllTime(attendance);
-        // 수정 후 리다이렉트 또는 다른 페이지로 이동
-        return "redirect:/attendance/getAllCheckTime?emp_id=" + attendance.getEmp_id();
+    // 출근 기록 메소드
+    @PostMapping("/checkIn")
+    @ResponseBody // JSON 형태로 응답을 반환하도록 설정
+    public String checkIn(@RequestParam("emp_id") String emp_id) {
+        AttendanceVO attendance = new AttendanceVO();
+        attendance.setEmp_id(emp_id); // emp_id를 설정
+        attendanceService.checkIn(attendance);
+        logger.debug("출근 기록 완료: " + emp_id);
+        return "출근 시간이 기록되었습니다."; // 성공 메시지 반환
     }
 
-    // 직원 근무 상태 조회
-    @RequestMapping("/getMemberWorkStatus")
-    public String getMemberWorkStatus(@RequestParam("emp_id") String emp_id, Model model) {
-        // 서비스 호출해서 근무 상태 정보 가져오기
-        List<AttendanceVO> workStatus = attendanceService.getMemberWorkStatus(emp_id);
-        model.addAttribute("workStatus", workStatus);
-        return "attendance/getMemberWorkStatus";
+    // 퇴근 기록 메소드
+    @PostMapping("/checkOut")
+    @ResponseBody // JSON 형태로 응답을 반환하도록 설정
+    public String checkOut(@RequestParam("emp_id") String emp_id) {
+        AttendanceVO attendance = new AttendanceVO();
+        attendance.setEmp_id(emp_id); // emp_id를 설정
+        attendanceService.checkOut(attendance);
+        logger.debug("퇴근 기록 완료: " + emp_id);
+        return "퇴근 시간이 기록되었습니다."; // 성공 메시지 반환
     }
-
-    // 근무 캘린더 조회
-    @RequestMapping("/getMemberCalendar")
-    public String getMemberCalendar(@ModelAttribute AttendanceVO attendance, Model model) {
-        // 서비스 호출해서 캘린더 정보 가져오기
-        List<AttendanceVO> calendar = attendanceService.getMemberCalendar(attendance);
-        model.addAttribute("calendar", calendar);
-        return "attendance/getMemberCalendar";
+    
+    //이미지 생성 
+    
+    @PostMapping("/generateQr")
+    @ResponseBody
+    public String generateQr(@RequestParam("emp_id") String emp_id) {
+        try {
+            String qrCodeBase64 = attendanceService.generateQrCode(emp_id);
+            if (qrCodeBase64 != null) {
+                return "data:image/png;base64," + qrCodeBase64; // Base64 이미지 URL 반환
+            } else {
+                return "Error generating QR code"; // QR 코드 생성 실패
+            }
+        } catch (Exception e) {
+            logger.error("QR 코드 생성 실패: " + e.getMessage());
+            return "Error generating QR code";
+        }
     }
-
-    // 모든 시간 추가
-    @PostMapping("/insertAllTime")
-    public String insertAllTime(@ModelAttribute AttendanceVO attendance) {
-        // 서비스 호출하여 새로운 시간 정보 추가
-        attendanceService.insertAllTime(attendance);
-        return "redirect:/attendance/getAllCheckTime?emp_id=" + attendance.getEmp_id();
-    }
-
-    // 근무 형태 삽입
-    @PostMapping("/insertWorkStatus")
-    public String insertWorkStatus(@RequestParam("workform_status") String workform_status) {
-        // 서비스 호출하여 근무 형태 추가
-        attendanceService.insertWorkStatus(workform_status);
-        return "redirect:/attendance/getAllCheckTime"; // 필요한 페이지로 리다이렉트
-    }
-
-    // 근무 형태 수정
-    @PostMapping("/updateWorkStatus")
-    public String updateWorkStatus(@RequestParam("emp_id") String emp_id, @RequestParam("workform_status") String workform_status) {
-        // 서비스 호출하여 근무 형태 수정
-        attendanceService.updateWorkStatus(emp_id, workform_status);
-        return "redirect:/attendance/getMemberWorkStatus?emp_id=" + emp_id;
-    }
-
-    // 출근 시간 삽입
-    @PostMapping("/insertCheckin")
-    public String insertCheckin(@RequestParam("check_in") String check_in) {
-        // 서비스 호출하여 출근 시간 삽입
-        attendanceService.insertCheckin(check_in);
-        return "redirect:/attendance/getAllCheckTime";
-    }
-
-    // 퇴근 시간 삽입
-    @PostMapping("/insertCheckOutTime")
-    public String insertCheckOutTime(@RequestParam("check_out") String check_out) {
-        // 서비스 호출하여 퇴근 시간 삽입
-        attendanceService.insertCheckOutTime(check_out);
-        return "redirect:/attendance/getAllCheckTime";
-    }
-
-    // 출퇴근 시간 조회
-    @RequestMapping("/getCheckTime")
-    public String getCheckTime(@RequestParam("emp_id") String emp_id, Model model) {
-        // 서비스 호출하여 출퇴근 시간 조회
-        AttendanceVO checkTime = attendanceService.getCheckTime(emp_id);
-        model.addAttribute("checkTime", checkTime);
-        return "attendance/getCheckTime";
-    }
-
-    // 출퇴근 시간 수정
-    @PostMapping("/updateCheckTime")
-    public String updateCheckTime(@ModelAttribute AttendanceVO attendance) {
-        // 서비스 호출하여 출퇴근 시간 수정
-        attendanceService.updateCheckTime(attendance);
-        return "redirect:/attendance/getCheckTime?emp_id=" + attendance.getEmp_id();
-    }
-
-    // 근무 상태 조회
-    @RequestMapping("/getWorkStatus")
-    public String getWorkStatus(@RequestParam("emp_id") String emp_id, Model model) {
-        // 서비스 호출하여 근무 상태 정보 조회
-        AttendanceVO workStatus = attendanceService.getWorkStatus(emp_id);
-        model.addAttribute("workStatus", workStatus);
-        return "attendance/getWorkStatus";
-    }
-    	
-  
-}
-turn "attendance/getWorkStatus";
-    }
-    	
   
 }

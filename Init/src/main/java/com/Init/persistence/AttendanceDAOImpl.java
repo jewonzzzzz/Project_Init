@@ -49,65 +49,30 @@ public class AttendanceDAOImpl implements AttendanceDAO{
 
 	  
 	  
-	  
-	  
-	  
-	    @Override
-	    public void updateAllTime(AttendanceVO uvo) {
-	        sqlSession.update(NAMESPACE + "updateAllTime", uvo);
+	  // 출퇴근 QR 인식
+	  @Override
+	    public void checkIn(AttendanceVO attendance) {
+	        sqlSession.insert(NAMESPACE + ".checkIn", attendance);
 	    }
 
 	    @Override
-	    public List<AttendanceVO> getMemberWorkStatus(String emp_id) {
-	        return sqlSession.selectList(NAMESPACE + "getMemberWorkStatus", emp_id);
+	    public void checkOut(AttendanceVO attendance) {
+	        sqlSession.insert(NAMESPACE + ".checkOut", attendance);
 	    }
+	
 
-	    @Override
-	    public List<AttendanceVO> getMemberCalendar(AttendanceVO gvo) {
-	        
-	        return sqlSession.selectList(NAMESPACE + "getMemberCalendar", gvo);
-	    }
 
-	    @Override
-	    public void insertAllTime(AttendanceVO attendance) {
-	        sqlSession.insert(NAMESPACE + "insertAllTime", attendance);
-	    }
 
-	    @Override
-	    public void insertWorkStatus(String workform_status) {
-	        sqlSession.insert(NAMESPACE + "insertWorkStatus", workform_status);
-	    }
 
-	    @Override
-	    public void updateWorkStatus(String emp_id, String workform_status) {
-	        sqlSession.update(NAMESPACE + "updateWorkStatus", workform_status);
-	    }
 
-	    @Override
-	    public void insertCheckin(String check_in) {
-	        sqlSession.insert(NAMESPACE + "insertCheckin", check_in);
-	    }
 
-	    @Override
-	    public void insertCheckOutTime(String check_out) {
-	        sqlSession.insert(NAMESPACE + "insertCheckOutTime", check_out);
-	    }
 
-	    @Override
-	    public AttendanceVO getCheckTime(String emp_id) {
-	        return sqlSession.selectOne(NAMESPACE + "getCheckTime", emp_id);
-	    }
 
-	    @Override
-	    public void updateCheckTime(AttendanceVO attendance) {
-	        sqlSession.update(NAMESPACE + "updateCheckTime", attendance);
-	    }
 
-	    @Override
-	    public AttendanceVO getWorkStatus(String emp_id) {
-	        return sqlSession.selectOne(NAMESPACE + "getWorkStatus", emp_id);
-	    }
-	}
+
+
+
+}
      
 	
 	
