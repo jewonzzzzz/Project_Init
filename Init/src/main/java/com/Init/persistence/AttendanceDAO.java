@@ -12,9 +12,20 @@ import com.Init.domain.AttendanceVO;
 public interface AttendanceDAO {
 	  List<AttendanceVO> getAllCheckTime(String emp_id);
 	   
-	  void checkIn(AttendanceVO attendance);
-	  void checkOut(AttendanceVO attendance);
+		void checkIn(AttendanceVO attendance);
+		void checkOut(AttendanceVO attendance);
 	  
+	  // emp_id로 출근 여부 확인
+	    boolean checkIfCheckedIn(String emp_id);
+	    
+	    // 출근 기록
+	    void recordCheckIn(String emp_id);
+	    
+	    // 퇴근 기록
+	    void recordCheckout(String emp_id);
+	    // 최근 출퇴근 기록
+	    public List<AttendanceVO> getRecentCheckTime(String empId);
+	     
 	}
 	
-
+	

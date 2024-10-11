@@ -72,20 +72,36 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
    
-   
-  
-    <div id="attendanceInfo">
-        <p id="attendanceMessage">아직 출퇴근 기록이 없습니다.</p>
-    </div>
+     <h1>나의 근태</h1>
+ 	   <h2>출퇴근 기록</h2>
     
-    <!-- ZXing QR 코드 스캔을 위한 div -->
-    <div id="reader" style="width: 300px; height: 300px;"></div>
+    <c:if test="${not empty attendanceData}">
+        <table>
+            <thead>
+                <tr>
+                    <th>출근 시간</th>
+                    <th>퇴근 시간</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="attendance" items="${attendanceData}">
+                    <tr>
+                        <td>${attendance.formattedCheckInTime}</td>
+                        <td>${attendance.formattedCheckOutTime}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+    
+    <c:if test="${empty attendanceData}">
+        <p>출퇴근 기록이 없습니다.</p>
+    </c:if>
+    
+    <h2>사용자 ID: <strong>${empId}</strong></h2>
 
-   
-    
-	
-	
-	
+    <!-- 추가 기능이 필요한 경우 아래에 삽입할 수 있습니다. -->
+
 	
 
         <button class="btn btn-primary">근태 결재 신청</button>
@@ -103,94 +119,7 @@
         <button class="btn btn-primary">근무제 결재 신청</button>
             </div>
      
-        <div class="list">
-            <div class="cell">
-                <div class="icon">
-                </div>
-                <div class="text">
-                    <div class="text---1">
-                        - 고정 근무
-                    </div>
-                    <div class="text--0900-1800">
-                        ㄴ 09:00 ~18:00
-                    </div>
-                </div>
-                <svg id="123:021595" class="icon-1"></svg>
-            </div>
-            <svg id="123:021566" class="divider"></svg>
-            <div class="cell-1">
-                <div class="icon-2">
-                </div>
-                <div class="text-36">
-                    <div class="text---2">
-                        - 선택 근무
-                    </div>
-                    <div class="text--1400-1800">
-                        ㄴ 14:00 ~18:00
-                    </div>
-                </div>
-                <svg id="123:021610" class="icon-3"></svg>
-            </div>
-            <svg id="123:021564" class="divider-1"></svg>
-            <div class="cell-2">
-                <div class="icon-4">
-                </div>
-                <div class="text-37">
-                    <div class="text---3">
-                        - 야간 근무
-                    </div>
-                    <div class="text--2200-0700">
-                        ㄴ 22:00 ~07:00
-                    </div>
-                </div>
-                <svg id="123:021569" class="icon-5"></svg>
-            </div>
-            <svg id="123:021562" class="divider-2"></svg>
-            <div class="cell-3">
-                <div class="icon-6">
-                </div>
-                <div class="text-38">
-                    <div class="text---4">
-                        - 특별 근무
-                    </div>
-                    <div class="text--0900-1801">
-                        ㄴ 09:00 ~18:00
-                    </div>
-                </div>
-                <svg id="123:021613" class="icon-7"></svg>
-            </div>
-        </div>
-        <div class="profile">
-            <div class="navigation-bar">
-                <div class="icon-8">
-                </div>
-                <div class="icons">
-                    <div class="icon-9">
-                    </div>
-                    <svg id="123:039532" class="icon-10"></svg>
-                </div>
-            </div>
-            <div class="profile-contents">
-                <div class="avatar">
-                    <img src="https://image-resource.creatie.ai/140658751204418/140658751204420/53f2f16fc321bb84025e76c3953fca73.jpeg" class="image" />
-                    <div class="username">
-                        <div class="james-john">
-                            James John
-                        </div>
-                        <svg id="123:039549" class="icon-11"></svg>
-                    </div>
-                </div>
-            </div>
-            <div class="text------------">
-                <div><span> - 사원 번호 :<div class="_p"></div>
-                        <div class="_p"></div> - 부서 : <div class="_p"></div>
-                        <div class="_p"></div> - 직책:<div class="_p"></div>
-                        <div class="_p"></div> - 출근시간 :<div class="_p"></div>
-                        <div class="_p"></div> - 퇴근시간 :<div class="_p"></div>
-                        <div class="_p"></div> - 근무한시간 :
-                    </span></div>
-            </div>
-        </div>
+    
        <button class="btn btn-info" id="checkinBtn">출근</button>
        <button class="btn btn-info" id="checkoutBtn">퇴근</button>
        <button class="btn btn-info" id="outworkBtn">외근</button>

@@ -1,8 +1,15 @@
 package com.Init.domain;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
+
 
 
 
@@ -30,5 +37,9 @@ public class AttendanceVO {
 	private String modified_person;
 	private int workform_status;
 		
+	
+	
+	
+	
 	
 }

@@ -64,6 +64,22 @@
         
     </style>
     
+    <!-- 사원 테이블 -->
+      <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+    
     
     
     
@@ -91,21 +107,107 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
+<h1>사원 근태 관리 </h1>
+<input type="text" id="emp_id" placeholder="사원 ID를 입력하세요" />
+<button id="checkTimeButton">사원 조회</button>
 
-   
-<h1>Attendance Admin</h1>
-    <input type="text" id="emp_id" placeholder="사원 ID를 입력하세요" />
-    <button id="checkTimeButton">시간 조회</button>
-    
-    <div id="attendanceData">
-        <!-- 조회된 데이터가 이곳에 표시될 수 있습니다 -->
-        <ul id="checkTimeList"></ul>
-    </div>
+<div id="attendanceData">
+    <table id="checkTimeTable">
+        <thead>
+            <tr>
+                <th>직원 ID</th> <!-- 직원 ID -->
+                <th>직원 CID</th> <!-- 직원 CID -->
+                <th>출근 시간</th>
+                <th>퇴근 시간</th>
+                <th>외출 시간</th>
+                <th>복귀 시간</th>
+                <th>근무 시간</th>
+                <th>야근 시간</th>
+                <th>특별 근무 시간</th>
+                <th>근무 상태</th>
+                <th>출근 수정 시간</th>
+                <th>퇴근 수정 시간</th>
+                <th>외출 수정 시간</th>
+                <th>결재 수정 시간</th>
+                <th>결재일</th>
+                <th>근태 ID</th>
+                <th>상태</th>
+                <th>초과 근무 시간</th>
+                <th>수정 이유</th>
+                <th>수정인</th>
+            </tr>
+        </thead>
+        <tbody id="checkTimeList">
+            <!-- 조회된 데이터가 여기에 삽입됩니다 -->
+        </tbody>
+    </table>
+</div>
 
+<script>
+    $(document).ready(function() {
+        $("#checkTimeButton").click(function() {
+            var empId = $("#emp_id").val(); // 입력된 사원 ID 가져오기
+
+            if (!empId) {
+                alert("사원 ID를 입력하세요.");
+                return;
+            }
+
+            // AJAX 요청
+            $.ajax({
+                url: '/Attendance/attendanceData', // 요청 URL
+                type: 'POST',
+                data: { emp_id: empId }, // emp_id 파라미터 전달
+                success: function(data) {
+                    $("#checkTimeList").empty(); // 기존 데이터 초기화
+
+                    // 조회된 데이터를 테이블에 추가
+                    if (data.length > 0) {
+                        $.each(data, function(index, attendance) {
+                            $("#checkTimeList").append(
+                                "<tr>" +
+                                    "<td>" + attendance.emp_id + "</td>" + // 직원 ID
+                                    "<td>" + attendance.emp_cid + "</td>" + // 직원 CID
+                                    "<td>" + attendance.check_in + "</td>" + // 출근 시간
+                                    "<td>" + attendance.check_out + "</td>" + // 퇴근 시간
+                                    "<td>" + attendance.workingoutside_time + "</td>" + // 외출 시간
+                                    "<td>" + attendance.return_time + "</td>" + // 복귀 시간
+                                    "<td>" + attendance.working_time + "</td>" + // 근무 시간
+                                    "<td>" + attendance.night_work_time + "</td>" + // 야근 시간
+                                    "<td>" + attendance.special_working_time + "</td>" + // 특별 근무 시간
+                                    "<td>" + attendance.workform_status + "</td>" + // 근무 상태
+                                    "<td>" + attendance.new_check_in + "</td>" + // 출근 수정 시간
+                                    "<td>" + attendance.new_check_out + "</td>" + // 퇴근 수정 시간
+                                    "<td>" + attendance.new_workingoutside_time + "</td>" + // 외출 수정 시간
+                                    "<td>" + attendance.modified_time + "</td>" + // 결재 수정 시간
+                                    "<td>" + attendance.created_at + "</td>" + // 결재일
+                                    "<td>" + attendance.attendance_id + "</td>" + // 근태 ID
+                                    "<td>" + attendance.status + "</td>" + // 상태
+                                    "<td>" + attendance.overtime + "</td>" + // 초과 근무 시간
+                                    "<td>" + attendance.modified_reason + "</td>" + // 수정 이유
+                                    "<td>" + attendance.modified_person + "</td>" + // 수정인
+                                "</tr>"
+                            );
+                        });
+                    } else {
+                        $("#checkTimeList").append("<tr><td colspan='20'>조회된 시간이 없습니다.</td></tr>");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX 요청 실패:", status, error);
+                    $("#checkTimeList").append("<tr><td colspan='20'>시간 조회에 실패했습니다.</td></tr>");
+                }
+            });
+        });
+    });
+</script>
+
+<!-- QR 생성 -->
+	<h1>사원 출/퇴근 QR카드 발급 </h1>
    <form action="${pageContext.request.contextPath}/getQR" method="get" target="qrFrame" onsubmit="showQrModal(event)">
-    <label for="emp_id">직원 ID 입력:</label>
-    <input type="text" id="emp_id" name="emp_id" placeholder="직원 ID 입력" required>
-    <button type="submit">QR 코드 생성</button>
+    <label for="emp_id">사원번호 :</label>
+    <input type="text" id="modal_emp_id" name="emp_id" placeholder="직원 ID 입력" required>
+    <button type="submit">사원 카드 발급</button>
 </form>
 
 <!-- QR 코드 모달 -->
@@ -132,7 +234,8 @@
     function showQrModal(event) {
         event.preventDefault(); // 기본 폼 제출 방지
         var form = event.target;
-        var actionUrl = form.action + "?emp_id=" + document.getElementById('emp_id').value;
+        var empId = document.getElementById('modal_emp_id').value; // 모달 내 입력 필드에서 emp_id 가져오기
+        var actionUrl = form.action + "?emp_id=" + empId; // URL에 emp_id 추가
 
         // iframe에 QR 코드 URL 로드
         document.getElementById('qrFrame').src = actionUrl;

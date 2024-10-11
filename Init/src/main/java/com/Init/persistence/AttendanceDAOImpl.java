@@ -59,12 +59,32 @@ public class AttendanceDAOImpl implements AttendanceDAO{
 	    public void checkOut(AttendanceVO attendance) {
 	        sqlSession.insert(NAMESPACE + ".checkOut", attendance);
 	    }
-	
+	    
+	    // 출근 체크했으면 한번더 체크하면 퇴근 
+	    
+	    @Override
+	    public boolean checkIfCheckedIn(String emp_id) {
+	    	 Integer result = sqlSession.selectOne(NAMESPACE + ".checkIfCheckedIn", emp_id);
+	    	    return result != null && result > 0;
+	    }
 
+	    @Override
+	    public void recordCheckIn(String emp_id) {
+	        sqlSession.insert(NAMESPACE + ".recordCheckIn", emp_id);
+	    }
 
-
-
-
+	    @Override
+	    public void recordCheckout(String emp_id) {
+	        sqlSession.update(NAMESPACE + ".recordCheckout", emp_id);
+	    }
+	    
+	    @Override
+	    public List<AttendanceVO> getRecentCheckTime(String emp_id) {
+	        logger.debug("최근 출퇴근 기록 조회 시작: emp_id={}", emp_id);
+	        List<AttendanceVO> recentAttendanceData = sqlSession.selectList(NAMESPACE + ".getRecentCheckTime", emp_id);
+	        logger.debug("최근 출퇴근 기록 조회 완료: 기록 수={}", recentAttendanceData.size());
+	        return recentAttendanceData;
+	    }
 
 
 
