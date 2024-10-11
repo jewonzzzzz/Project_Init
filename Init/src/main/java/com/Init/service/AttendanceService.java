@@ -14,6 +14,13 @@ public interface AttendanceService {
 	
 	public void checkIn(AttendanceVO attendance);
 	public void checkOut(AttendanceVO attendance);
-	public String generateQrCode(String emp_id);
 	
+	
+	boolean checkIfCheckedIn(String emp_id);
+    void recordCheckIn(String emp_id);
+    void recordCheckout(String emp_id);
+
+    public List<AttendanceVO> getRecentCheckTime(String emp_id);
+    
+    
 }

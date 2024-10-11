@@ -8,10 +8,7 @@
 	<!-- 모든 시간 정보 조회 -->
 	<select id="getAllCheckTime"
 		resultType="com.Init.domain.AttendanceVO">
-		SELECT check_in, check_out,
-		workingoutside_time,
-		return_time, working_time, night_work_time, special_working_time,
-		workform_status
+		SELECT *
 		FROM attendance_ch
 		WHERE emp_id = #{emp_id}
 	</select>
@@ -21,16 +18,51 @@
 	<!--QR 출퇴근 -->
 	<insert id="checkIn"
 		parameterType="com.Init.domain.AttendanceVO">
-		INSERT INTO attendance (emp_id, check_in)
-		VALUES (#{emp_id}, NOW())
+		INSERT INTO attendance_ch (emp_id, check_in)
+		VALUES
+		(#{emp_id}, NOW())
 	</insert>
 
 	<insert id="checkOut"
 		parameterType="com.Init.domain.AttendanceVO">
-		INSERT INTO attendance (emp_id, check_out)
+		INSERT INTO attendance_ch (emp_id, check_out)
+		VALUES
+		(#{emp_id}, NOW())
+	</insert>
+
+
+	<!-- emp_id로 출근 여부 확인 -->
+	<select id="checkIfCheckedIn" parameterType="String" resultType="Integer">
+    SELECT COUNT(*)
+    FROM attendance_ch
+    WHERE emp_id = #{emp_id} AND check_in IS NOT NULL AND check_out IS NULL
+</select>
+
+	<!-- 출근 기록 -->
+	<insert id="recordCheckIn" parameterType="string">
+		INSERT INTO attendance_ch (emp_id, check_in)
 		VALUES (#{emp_id}, NOW())
 	</insert>
 
+	<!-- 퇴근 기록 -->
+	<update id="recordCheckout" parameterType="string">
+		UPDATE attendance_ch
+		SET check_out = NOW()
+		WHERE emp_id = #{emp_id}
+		AND check_in IS NOT NULL
+		AND check_out IS NULL
+	</update>
+	
+	<!-- 최근 출퇴근 기록  -->
+	 <select id="getRecentCheckTime" parameterType="String" resultType="com.Init.domain.AttendanceVO">
+        SELECT *
+        FROM attendance_ch
+        WHERE emp_id = #{emp_id}
+        ORDER BY check_in DESC
+        LIMIT 1
+    </select>
+	
+	
 
 
 

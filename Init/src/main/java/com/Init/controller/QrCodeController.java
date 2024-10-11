@@ -1,5 +1,7 @@
 package com.Init.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -7,17 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 @RestController
-public class QrCodeController{
+public class QrCodeController {
+
 
     @GetMapping("/getQR")
     public ResponseEntity<byte[]> createQr(@RequestParam String emp_id) {
@@ -28,6 +29,7 @@ public class QrCodeController{
         try {
             // QR 코드 생성
             BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 200, 200);
+            
 
             // 이미지를 바이트 배열로 변환
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -48,3 +50,4 @@ public class QrCodeController{
         }
     }
 }
+
