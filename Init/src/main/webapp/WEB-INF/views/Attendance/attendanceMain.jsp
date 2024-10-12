@@ -14,11 +14,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-qrcode/1.0.0/jquery.qrcode.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
+   
     
-    <!--웹소켓  -->
-        <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <!-- WebSocket 및 QR 코드 스캔 스크립트 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
+    
     
     
     
@@ -32,6 +30,32 @@
     />
 
     <!-- Fonts and icons -->
+    
+      <script>
+        function checkOut() {
+            // AJAX 요청을 보내어 퇴근 처리
+            fetch('/Attendance/checkOut', {
+                method: 'GET',
+                credentials: 'include' // 세션을 포함하여 요청
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('퇴근 처리 실패');
+                }
+            })
+            .then(message => {
+                alert(message); // 성공 메시지 출력
+                // 필요에 따라 페이지를 리다이렉트할 수 있습니다.
+                // location.reload(); // 페이지 리로드
+            })
+            .catch(error => {
+                alert(error.message); // 오류 메시지 출력
+            });
+        }
+    </script>
+    
     
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -71,38 +95,83 @@
         <div class="container">
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
-   
-     <h1>나의 근태</h1>
- 	   <h2>출퇴근 기록</h2>
-    
-    <c:if test="${not empty attendanceData}">
-        <table>
-            <thead>
-                <tr>
-                    <th>출근 시간</th>
-                    <th>퇴근 시간</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="attendance" items="${attendanceData}">
-                    <tr>
-                        <td>${attendance.formattedCheckInTime}</td>
-                        <td>${attendance.formattedCheckOutTime}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </c:if>
-    
-    <c:if test="${empty attendanceData}">
-        <p>출퇴근 기록이 없습니다.</p>
-    </c:if>
-    
-    <h2>사용자 ID: <strong>${empId}</strong></h2>
+  <h1>Attendance Main</h1>
 
-    <!-- 추가 기능이 필요한 경우 아래에 삽입할 수 있습니다. -->
+    <c:if test="${not empty checkInTime}">
+        <div class="attendance-info">
+            <p>출근 시간: ${checkInTime}</p>
+        </div>
+    </c:if>
+		
+		
+		
+				<script>
+		    $(document).ready(function() {
+		        $('#checkoutButton').click(function() {
+		            $.ajax({
+		                url: '<c:url value="checkOut" />',
+		                type: 'GET',
+		                success: function(response) {
+		                    if (response.status === 'success') {
+		                        alert(response.message);
+		
+		                        // 퇴근 시간이 성공적으로 업데이트되면 현재 시간을 퇴근 시간으로 표시
+		                        const now = new Date();
+		                        const formattedTime = now.getFullYear() + '-' +
+		                            ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
+		                            ('0' + now.getDate()).slice(-2) + ' ' +
+		                            ('0' + now.getHours()).slice(-2) + ':' +
+		                            ('0' + now.getMinutes()).slice(-2) + ':' +
+		                            ('0' + now.getSeconds()).slice(-2);
+		                        
+		                        $('#checkoutTimeDisplay').text('퇴근 시간: ' + formattedTime);
+		                    } else {
+		                        alert(response.message);
+		                    }
+		                },
+		                error: function() {
+		                    alert('퇴근 요청 중 오류가 발생했습니다.');
+		                }
+		            });
+		        });
+		    });
+		    
+		    $(document).ready(function() {
+		        $('#calculateButton').click(function() {
+		            $.ajax({
+		                url: '<c:url value="calculateWorkingTime" />',
+		                type: 'GET',
+		                success: function(response) {
+		                    alert(response.message);
+		                    // 계산된 근무 시간을 페이지에 표시
+		                    $('#workingTimeDisplay').text('총 근무 시간: ' + response.workingTime.toFixed(2) + ' 시간');
+		                },
+		                error: function() {
+		                    alert('근무 시간 계산 중 오류가 발생했습니다.');
+		                }
+		            });
+		        });
+		    });
+		    </script>
 
-	
+		    <button id="calculateButton">근무 시간 계산</button>
+		    <p id="workingTimeDisplay">총 근무 시간이 아직 계산되지 않았습니다.</p>
+		    
+		
+		<button id="checkoutButton">퇴근</button>
+		<p id="checkoutTimeDisplay">퇴근 시간이 아직 없습니다.</p>
+		<!-- 출퇴근   -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
         <button class="btn btn-primary">근태 결재 신청</button>
         

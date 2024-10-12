@@ -213,17 +213,17 @@
 			<version>v3-rev411-1.25.0</version>
 		</dependency>
 		
-	<dependency>
-    <groupId>com.google.zxing</groupId>
-    <artifactId>core</artifactId>
-    <version>3.4.1</version> <!-- 최신 버전 확인 후 업데이트 -->
-</dependency>
-<dependency>
-    <groupId>com.google.zxing</groupId>
-    <artifactId>javase</artifactId>
-    <version>3.4.1</version> <!-- 최신 버전 확인 후 업데이트 -->
-</dependency>
-		
+			<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>core</artifactId>
+		    <version>3.4.1</version> <!-- 최신 버전 확인 후 업데이트 -->
+		</dependency>
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.4.1</version> <!-- 최신 버전 확인 후 업데이트 -->
+		</dependency>
+				
 	
 		
 		

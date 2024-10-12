@@ -5,65 +5,81 @@
 
 
 <mapper namespace="com.Init.mapper.AttendanceMapper">
-	<!-- 모든 시간 정보 조회 -->
-	<select id="getAllCheckTime"
-		resultType="com.Init.domain.AttendanceVO">
-		SELECT *
-		FROM attendance_ch
-		WHERE emp_id = #{emp_id}
-	</select>
+		<!-- 모든 시간 정보 조회 -->
+		<select id="getAllCheckTime"
+			resultType="com.Init.domain.AttendanceVO">
+			SELECT *
+			FROM attendance_ch
+			WHERE emp_id = #{emp_id}
+		</select>
 
+	
+		<!-- 출근 기록 -->
+		<insert id="recordCheckIn" parameterType="String">
 
+	    INSERT INTO attendance_ch (emp_id, check_in)
+	    VALUES (#{emp_id}, NOW());
 
-	<!--QR 출퇴근 -->
-	<insert id="checkIn"
-		parameterType="com.Init.domain.AttendanceVO">
-		INSERT INTO attendance_ch (emp_id, check_in)
-		VALUES
-		(#{emp_id}, NOW())
-	</insert>
-
-	<insert id="checkOut"
-		parameterType="com.Init.domain.AttendanceVO">
-		INSERT INTO attendance_ch (emp_id, check_out)
-		VALUES
-		(#{emp_id}, NOW())
-	</insert>
-
-
-	<!-- emp_id로 출근 여부 확인 -->
-	<select id="checkIfCheckedIn" parameterType="String" resultType="Integer">
-    SELECT COUNT(*)
-    FROM attendance_ch
-    WHERE emp_id = #{emp_id} AND check_in IS NOT NULL AND check_out IS NULL
-</select>
-
-	<!-- 출근 기록 -->
-	<insert id="recordCheckIn" parameterType="string">
-		INSERT INTO attendance_ch (emp_id, check_in)
-		VALUES (#{emp_id}, NOW())
-	</insert>
-
-	<!-- 퇴근 기록 -->
-	<update id="recordCheckout" parameterType="string">
-		UPDATE attendance_ch
+		</insert>
+			
+		
+		<!-- 퇴근시간 -->
+		<update id="recordCheckout" parameterType="String">
+	 	UPDATE attendance_ch
 		SET check_out = NOW()
 		WHERE emp_id = #{emp_id}
-		AND check_in IS NOT NULL
-		AND check_out IS NULL
-	</update>
+		  AND check_in = (
+		      SELECT check_in
+		      FROM (
+		          SELECT check_in
+		          FROM attendance_ch
+		          WHERE emp_id = #{emp_id}
+		            AND check_in IS NOT NULL
+		          ORDER BY check_in DESC
+		          LIMIT 1
+		      ) AS latest 
+		  )
+			LIMIT 1;
+		</update> 
+		<!-- 체크아웃이 NULL인 경우만 업데이트 -->
+    
+	    <!-- 최근 출근 확인 -->
 	
-	<!-- 최근 출퇴근 기록  -->
-	 <select id="getRecentCheckTime" parameterType="String" resultType="com.Init.domain.AttendanceVO">
-        SELECT *
+		<!-- emp_id에 대한 가장 최신의 출근 기록 중 퇴근 시간이 없는 기록 조회 (퇴근 시간은 조회하지 않음) -->
+		<select id="fetchLatestAttendanceRecord" parameterType="String" resultType="com.Init.domain.AttendanceVO">
+	    SELECT check_in 
+	    FROM attendance_ch
+	    WHERE emp_id = #{emp_id} 
+	      AND check_in IS NOT NULL 
+	    ORDER BY check_in DESC 
+	    LIMIT 1
+	</select>
+	
+		<!-- 최근 퇴근한시간 조회-->
+		<select id="fetchLatestCheckOutRecord" parameterType="String" resultType="com.Init.domain.AttendanceVO">
+	    SELECT check_in,check_out
         FROM attendance_ch
         WHERE emp_id = #{emp_id}
         ORDER BY check_in DESC
         LIMIT 1
-    </select>
+	</select>
 	
+		<!-- 근무 시간 계산 및 업데이트 -->
+	<update id="calculateAndUpdateWorkingTime" parameterType="String">
+	    UPDATE attendance_ch
+	    SET working_time = TIMESTAMPDIFF(MINUTE, check_in, check_out)
+	    WHERE emp_id = #{emp_id} 
+	    AND check_out IS NOT NULL;  <!-- 퇴근 시간이 존재하는 경우만 업데이트 -->
+	</update>
 	
-
+	<select id="getWorkingTime" resultType="double">
+	    SELECT working_time 
+	    FROM attendance_ch 
+	    WHERE emp_id = #{emp_id} 
+	    AND check_out IS NOT NULL 
+	    ORDER BY check_in DESC 
+	    LIMIT 1;
+	</select>
 
 
 
