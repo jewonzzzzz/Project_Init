@@ -31,30 +31,7 @@
 
     <!-- Fonts and icons -->
     
-      <script>
-        function checkOut() {
-            // AJAX 요청을 보내어 퇴근 처리
-            fetch('/Attendance/checkOut', {
-                method: 'GET',
-                credentials: 'include' // 세션을 포함하여 요청
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('퇴근 처리 실패');
-                }
-            })
-            .then(message => {
-                alert(message); // 성공 메시지 출력
-                // 필요에 따라 페이지를 리다이렉트할 수 있습니다.
-                // location.reload(); // 페이지 리로드
-            })
-            .catch(error => {
-                alert(error.message); // 오류 메시지 출력
-            });
-        }
-    </script>
+     
     
     
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
